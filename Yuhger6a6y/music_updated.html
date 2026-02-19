@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yuhger6a6y - Music</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .carousel-wrapper {
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+        }
+        
+        @media (max-width: 767px) {
+            #carousel {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                justify-content: flex-start;
+                display: flex;
+                scroll-behavior: smooth;
+            }
+            
+            .music-carousel {
+                justify-content: flex-start;
+            }
+            
+            .music-card {
+                flex: 0 0 auto;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            #carousel {
+                justify-content: center;
+                overflow-x: visible;
+                display: flex;
+                scroll-behavior: smooth;
+            }
+            
+            .music-card {
+                flex: 0 0 auto;
+            }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f4f4f6;
+            color: #0f0f0f;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Wave background texture */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(138, 43, 226, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.02) 0%, transparent 50%);
+            background-size: 800px 800px;
+            animation: wavePulse 20s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes wavePulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+            50% { transform: scale(1.05) rotate(5deg); opacity: 1; }
+        }
+
+        /* Floating 3D abstract shape */
+        .abstract-shape {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%;
+            filter: blur(60px);
+            z-index: 1;
+            animation: floatRotate 30s ease-in-out infinite;
+        }
+
+        @keyframes floatRotate {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+            33% { transform: translate(-50%, -50%) rotate(120deg) scale(1.1); }
+            66% { transform: translate(-50%, -50%) rotate(240deg) scale(0.9); }
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            position: relative;
+            z-index: 1000;
+            background-color: rgba(244, 244, 246, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #0f0f0f;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 16px;
+            font-weight: 500;
+            color: #0f0f0f;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #666;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #0f0f0f;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .back-btn {
+            padding: 12px 24px;
+            background-color: #0f0f0f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background-color: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Music Section */
+        .music-section {
+            padding: 100px 50px;
+            position: relative;
+            min-height: 100vh;
+            z-index: 10;
+        }
+
+        .music-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #0f0f0f;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            font-size: 20px;
+            color: #666;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Music carousel container */
+        .music-carousel {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            gap: 30px;
+            padding: 20px 0;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-behavior: smooth;
+        }
+
+        .carousel-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-wrapper.dragging {
+            scroll-behavior: auto;
+            cursor: grabbing;
+        }
+
+        /* Music card design */
+        .music-card {
+            scroll-snap-align: center;
+            flex: 0 0 auto;
+            width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.08),
+                0 1px 2px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            cursor: pointer;
+            animation: cardSlideIn 0.6s ease-out;
+            animation-fill-mode: backwards;
+        }
+
+        .music-card:nth-child(1) { animation-delay: 0.1s; }
+        .music-card:nth-child(2) { animation-delay: 0.2s; }
+        .music-card:nth-child(3) { animation-delay: 0.3s; }
+        .music-card:nth-child(4) { animation-delay: 0.4s; }
+        .music-card:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes cardSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .music-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.15),
+                0 0 30px rgba(138, 43, 226, 0.1);
+        }
+
+        .music-card.active {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 
+                0 25px 60px rgba(0, 0, 0, 0.2),
+                0 0 40px rgba(138, 43, 226, 0.2);
+        }
+
+        .album-cover {
+            width: 100%;
+            height: 200px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            object-fit: cover;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .music-card:hover .album-cover {
+            transform: scale(1.05);
+        }
+
+        .music-card a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .music-card a:hover {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .track-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f0f0f;
+            margin-bottom: 8px;
+            letter-spacing: -0.2px;
+        }
+
+        .track-meta {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .track-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .play-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #0f0f0f;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .play-btn.active {
+            background: linear-gradient(45deg, #8a2be2, #00ffff);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
+            50% { transform: scale(1.1); box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4); }
+        }
+
+        .track-duration {
+            font-size: 14px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            color: #ddd;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px;
+        }
+
+        .favorite-btn:hover {
+            color: #ff6b6b;
+            transform: scale(1.2);
+        }
+
+        .favorite-btn.active {
+            color: #ff6b6b;
+        }
+
+        /* Waveform animation */
+        .waveform-bar {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 20px;
+            margin: 10px 0;
+        }
+
+        .waveform-bar div {
+            width: 3px;
+            background: linear-gradient(to top, #8a2be2, #00ffff);
+            border-radius: 2px;
+            animation: waveform 1.2s ease-in-out infinite;
+        }
+
+        .waveform-bar div:nth-child(2n) { animation-delay: 0.1s; }
+        .waveform-bar div:nth-child(3n) { animation-delay: 0.2s; }
+        .waveform-bar div:nth-child(4n) { animation-delay: 0.3s; }
+
+        @keyframes waveform {
+            0%, 100% { transform: scaleY(0.3); opacity: 0.4; }
+            50% { transform: scaleY(1); opacity: 1; }
+        }
+
+        /* Navigation arrows */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            z-index: 20;
+        }
+
+        .music-carousel:hover .carousel-nav {
+            opacity: 1;
+        }
+
+        .carousel-nav:hover {
+            transform: translateY(-50%) scale(1.1);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-prev {
+            left: 20px;
+        }
+
+        .nav-next {
+            right: 20px;
+        }
+
+        .carousel-nav i {
+            font-size: 20px;
+            color: #0f0f0f;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .section-title {
+                font-size: 40px;
+            }
+            
+            .music-card {
+                width: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .back-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .music-section {
+                padding: 60px 20px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+            
+            .section-subtitle {
+                font-size: 18px;
+            }
+            
+            .music-card {
+                width: 250px;
+                padding: 20px;
+            }
+            
+            .album-cover {
+                height: 160px;
+            }
+            
+            .track-title {
+                font-size: 20px;
+            }
+            
+            .carousel-nav {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .nav-prev {
+                left: 10px;
+            }
+            
+            .nav-next {
+                right: 10px;
+            }
+            
+            .carousel-nav i {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .music-section {
+                padding: 50px 15px;
+            }
+            
+            .nav {
+                padding: 15px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .section-subtitle {
+                font-size: 16px;
+            }
+            
+            .music-card {
+                width: 220px;
+                padding: 15px;
+            }
+            
+            .album-cover {
+                height: 140px;
+            }
+            
+            .track-title {
+                font-size: 18px;
+            }
+            
+            .track-meta {
+                font-size: 12px;
+            }
+            
+            .play-btn {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .track-duration {
+                font-size: 12px;
+            }
+            
+            .favorite-btn {
+                font-size: 16px;
+            }
+        }
+        
+        /* Mobile-specific touch enhancements */
+        @media (hover: none) and (pointer: coarse) {
+            .music-card:hover {
+                transform: none;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            }
+            
+            .music-card.active {
+                transform: translateY(-10px) scale(1.03);
+            }
+            
+            .carousel-nav:hover {
+                transform: translateY(-50%);
+            }
+            
+            .carousel-nav:active {
+                transform: translateY(-50%) scale(0.95);
+            }
+            
+            .play-btn:hover,
+            .favorite-btn:hover {
+                transform: none;
+            }
+            
+            .play-btn:active,
+            .favorite-btn:active {
+                transform: scale(0.95);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="abstract-shape"></div>
+    
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="index.html" class="logo">Yuhger6a6y</a>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="music.html" class="nav-link">Music</a>
+            <a href="gallery.html" class="nav-link">Gallery</a>
+            <a href="about-photography/about-photography.html" class="nav-link">About</a>
+            <a href="player/advanced-player.html" class="nav-link">Player</a>
+            <a href="album-timeline/album-timeline.html" class="nav-link">Albums</a>
+            <a href="contact/contact.html" class="nav-link">Contact</a>
+        </div>
+        <a href="index.html" class="back-btn">Back to Home</a>
+    </nav>
+
+    <!-- Music Section -->
+    <section class="music-section">
+        <div class="music-content">
+            <div class="section-header">
+                <h2 class="section-title">Latest Releases</h2>
+                <p class="section-subtitle">Stream the sound of Yuhger6a6y</p>
+            </div>
+                    
+            <div class="music-carousel" style="justify-content: center;">
+                <div class="carousel-wrapper" id="carousel" style="display: flex; gap: 30px; overflow-x: auto; overflow-y: visible; scrollbar-width: none; -ms-overflow-style: none; padding: 10px 0; -ms-overflow-style: -ms-autohiding-scrollbar; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
+                    <a href="https://fanlink.tv/bestlies" target="_blank"><div class="music-card" style="flex: 0 0 auto;">
+                        <img src="images/best lifes.jpeg" alt="Best Lies" class="album-cover">
+                        <h3 class="track-title">Best Lies</h3>
+                        <p class="track-meta">Feb 14 • 2026</p>
+                        <div class="track-controls">
+                            <button class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="waveform-bar">
+                                <div style="height: 8px;"></div>
+                                <div style="height: 12px;"></div>
+                                <div style="height: 16px;"></div>
+                                <div style="height: 10px;"></div>
+                                <div style="height: 14px;"></div>
+                            </div>
+                            <span class="track-duration">3:38</span>
+                            <button class="favorite-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div></a>
+                    </div>
+                                                
+                    <a href="https://yuhger.fanlink.tv/Go6a6y" target="_blank"><div class="music-card" style="flex: 0 0 auto;">
+                        <img src="images/Go6a6y.jpeg" alt="Go 6a6y" class="album-cover">
+                        <h3 class="track-title">Go 6a6y</h3>
+                        <p class="track-meta">Dec 25 • 2025</p>
+                        <div class="track-controls">
+                            <button class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="waveform-bar">
+                                <div style="height: 6px;"></div>
+                                <div style="height: 14px;"></div>
+                                <div style="height: 18px;"></div>
+                                <div style="height: 12px;"></div>
+                                <div style="height: 10px;"></div>
+                            </div>
+                            <span class="track-duration">2:20</span>
+                            <button class="favorite-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div></a>
+                    </div>
+                                                
+                    <a href="https://yuhger6a6y.fanlink.tv/JND" target="_blank"><div class="music-card" style="flex: 0 0 auto;">
+                        <img src="images/Jetti N Dracula.jpeg" alt="Jetti N' Dracula" class="album-cover">
+                        <h3 class="track-title">Jetti N' Dracula</h3>
+                        <p class="track-meta">Oct 16 • 2025</p>
+                        <div class="track-controls">
+                            <button class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="waveform-bar">
+                                <div style="height: 10px;"></div>
+                                <div style="height: 16px;"></div>
+                                <div style="height: 12px;"></div>
+                                <div style="height: 18px;"></div>
+                                <div style="height: 8px;"></div>
+                            </div>
+                            <span class="track-duration">3:25</span>
+                            <button class="favorite-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Albums & Music Section -->
+    <section class="music-section">
+        <div class="music-content">
+            <div class="section-header">
+                <h2 class="section-title">Albums & Music</h2>
+                <p class="section-subtitle">Explore the full collection of albums and tracks</p>
+            </div>
+            
+            <div class="music-carousel">
+                <button class="carousel-nav nav-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="carousel-wrapper" id="albumsCarousel" style="scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
+                    <!-- Album Card 1 -->
+                    <a href="https://fanlink.tv/ssstape" target="_blank"><div class="music-card">
+                        <img src="images/sex tape.jpeg" alt="S**TAPE" class="album-cover">
+                        <h3 class="track-title">S**TAPE</h3>
+                        <p class="track-meta">Album • 2025</p>
+                        <div class="track-controls">
+                            <button class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="waveform-bar">
+                                <div style="height: 12px;"></div>
+                                <div style="height: 8px;"></div>
+                                <div style="height: 14px;"></div>
+                                <div style="height: 16px;"></div>
+                                <div style="height: 10px;"></div>
+                            </div>
+                            <span class="track-duration">3 tracks</span>
+                            <button class="favorite-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div></a>
+                    </div>
+                                
+                    <!-- Album Card 2 -->
+                    <a href="https://audiomack.com/yuhger6a6y/album/3-girls" target="_blank"><div class="music-card">
+                        <img src="images/album-3girls.jpeg" alt="3 Girls" class="album-cover">
+                        <h3 class="track-title">3 Girls</h3>
+                        <p class="track-meta">Album • 2020</p>
+                        <div class="track-controls">
+                            <button class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="waveform-bar">
+                                <div style="height: 14px;"></div>
+                                <div style="height: 10px;"></div>
+                                <div style="height: 18px;"></div>
+                                <div style="height: 12px;"></div>
+                                <div style="height: 16px;"></div>
+                            </div>
+                            <span class="track-duration">3 tracks</span>
+                            <button class="favorite-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div></a>
+                    </div>
+                                
+                    <!-- Album Card 3 -->
+                    <a href="https://fanlink.tv/WatIwant" target="_blank"><div class="music-card">
+                        <img src="images/what i want.jpeg" alt="What I Want" class="album-cover">
+                        <h3 class="track-title">What I Want</h3>
+                        <p class="track-meta">June 19 • 2025</p>
+                        <div class="track-controls">
+                            <button class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="waveform-bar">
+                                <div style="height: 6px;"></div>
+                                <div style="height: 14px;"></div>
+                                <div style="height: 18px;"></div>
+                                <div style="height: 12px;"></div>
+                                <div style="height: 10px;"></div>
+                            </div>
+                            <span class="track-duration">1 track</span>
+                            <button class="favorite-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div></a>
+                    </div>
+                                
+                    <!-- Album Card 4 -->
+                    <a href="https://yuhger6a6y.fanlink.tv/YWOD" target="_blank"><div class="music-card">
+                        <img src="images/World on drugs.jpeg" alt="WORLD ON DRUGS" class="album-cover">
+                        <h3 class="track-title">WORLD ON DRUGS</h3>
+                        <p class="track-meta">May 1 • 2025</p>
+                        <div class="track-controls">
+                            <button class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="waveform-bar">
+                                <div style="height: 16px;"></div>
+                                <div style="height: 12px;"></div>
+                                <div style="height: 10px;"></div>
+                                <div style="height: 14px;"></div>
+                                <div style="height: 8px;"></div>
+                            </div>
+                            <span class="track-duration">1 track</span>
+                            <button class="favorite-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div></a>
+                    </div>
+                                
+                    <!-- Album Card 5 -->
+                    <a href="https://yuhger6a6y.fanlink.tv/YuhGerLifE" target="_blank"><div class="music-card">
+                        <img src="images/YugerLife.jpeg" alt="YuhGerLife" class="album-cover">
+                        <h3 class="track-title">YuhGerLife</h3>
+                        <p class="track-meta">April 10 • 2025</p>
+                        <div class="track-controls">
+                            <button class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="waveform-bar">
+                                <div style="height: 10px;"></div>
+                                <div style="height: 16px;"></div>
+                                <div style="height: 12px;"></div>
+                                <div style="height: 8px;"></div>
+                                <div style="height: 14px;"></div>
+                            </div>
+                            <span class="track-duration">1 track</span>
+                            <button class="favorite-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div></a>
+                    </div>
+                                
+                    <!-- Album Card 6 -->
+                    <a href="https://yuhger6a6y.fanlink.tv/yww" target="_blank"><div class="music-card">
+                        <img src="images/YWW.jpeg" alt="YWW" class="album-cover">
+                        <h3 class="track-title">YWW</h3>
+                        <p class="track-meta">March 10 • 2025</p>
+                        <div class="track-controls">
+                            <button class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="waveform-bar">
+                                <div style="height: 8px;"></div>
+                                <div style="height: 12px;"></div>
+                                <div style="height: 16px;"></div>
+                                <div style="height: 10px;"></div>
+                                <div style="height: 14px;"></div>
+                            </div>
+                            <span class="track-duration">2:12</span>
+                            <button class="favorite-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div></a>
+                    </div>
+                                
+                    <!-- Album Card 7 -->
+                    <a href="https://yuhger6a6y.fanlink.tv/y4y" target="_blank"><div class="music-card">
+                        <img src="images/Y 4 Yrazy.jpeg" alt="Y 4 Yrazy" class="album-cover">
+                        <h3 class="track-title">Y 4 Yrazy</h3>
+                        <p class="track-meta">Feb 1 • 2025</p>
+                        <div class="track-controls">
+                            <button class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="waveform-bar">
+                                <div style="height: 6px;"></div>
+                                <div style="height: 14px;"></div>
+                                <div style="height: 18px;"></div>
+                                <div style="height: 12px;"></div>
+                                <div style="height: 10px;"></div>
+                            </div>
+                            <span class="track-duration">2:24</span>
+                            <button class="favorite-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div></a>
+                    </div>
+                </div>
+                
+                <button class="carousel-nav nav-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Carousel functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.getElementById('carousel');
+            const prevBtn = document.querySelector('.nav-prev');
+            const nextBtn = document.querySelector('.nav-next');
+            const cardWidth = 250; // Adjusted for mobile
+            let isDragging = false;
+            let startX = 0;
+            let scrollLeft = 0;
+            let currentPlaying = null;
+
+            // Navigation buttons
+            if (prevBtn && nextBtn && carousel) {
+                prevBtn.addEventListener('click', () => {
+                    // Check if we can scroll left
+                    if (carousel.scrollLeft > 0) {
+                        carousel.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+                    }
+                });
+                
+                nextBtn.addEventListener('click', () => {
+                    // Check if we can scroll right
+                    if (carousel.scrollLeft < carousel.scrollWidth - carousel.clientWidth) {
+                        carousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                    }
+                });
+                
+                // Add touch support for navigation buttons
+                prevBtn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    // Check if we can scroll left
+                    if (carousel.scrollLeft > 0) {
+                        carousel.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+                    }
+                });
+                
+                nextBtn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    // Check if we can scroll right
+                    if (carousel.scrollLeft < carousel.scrollWidth - carousel.clientWidth) {
+                        carousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                    }
+                });
+            }
+
+            // Enhanced drag to scroll with touch support for both carousels
+            const carousels = document.querySelectorAll('#carousel, #albumsCarousel');
+            
+            carousels.forEach(c => {
+                // Mouse events
+                c.addEventListener('mousedown', (e) => {
+                    isDragging = true;
+                    c.classList.add('dragging');
+                    startX = e.pageX - c.offsetLeft;
+                    scrollLeft = c.scrollLeft;
+                });
+
+                c.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    const x = e.pageX - c.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    c.scrollLeft = scrollLeft - walk;
+                });
+
+                c.addEventListener('mouseup', () => {
+                    isDragging = false;
+                    c.classList.remove('dragging');
+                });
+
+                c.addEventListener('mouseleave', () => {
+                    isDragging = false;
+                    c.classList.remove('dragging');
+                });
+
+                // Touch events for mobile
+                let touchStartX = 0;
+                let touchStartY = 0;
+                
+                c.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].pageX;
+                    touchStartY = e.touches[0].pageY;
+                    startX = e.touches[0].pageX - c.offsetLeft;
+                    scrollLeft = c.scrollLeft;
+                });
+
+                c.addEventListener('touchmove', (e) => {
+                    const touchX = e.touches[0].pageX;
+                    const touchY = e.touches[0].pageY;
+                    const deltaX = Math.abs(touchX - touchStartX);
+                    const deltaY = Math.abs(touchY - touchStartY);
+                    
+                    // Only scroll if horizontal movement is greater than vertical
+                    if (deltaX > deltaY) {
+                        e.preventDefault();
+                        const x = e.touches[0].pageX - c.offsetLeft;
+                        const walk = (x - startX) * 2;
+                        c.scrollLeft = scrollLeft - walk;
+                    }
+                });
+                
+                c.addEventListener('touchend', () => {
+                    isDragging = false;
+                    c.classList.remove('dragging');
+                });
+            });
+
+            // Enhanced play button functionality with touch support
+            document.querySelectorAll('.play-btn').forEach((btn, index) => {
+                // Mouse click
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    handlePlayButtonClick(this, index);
+                });
+                
+                // Touch support
+                btn.addEventListener('touchstart', function(e) {
+                    e.stopPropagation();
+                    handlePlayButtonClick(this, index);
+                });
+            });
+
+            function handlePlayButtonClick(button, index) {
+                // Reset all play buttons
+                document.querySelectorAll('.play-btn').forEach(b => {
+                    b.innerHTML = '<i class="fas fa-play"></i>';
+                    b.classList.remove('active');
+                });
+                document.querySelectorAll('.music-card').forEach(card => {
+                    card.classList.remove('active');
+                });
+
+                // Set current button as active
+                if (currentPlaying === index) {
+                    currentPlaying = null;
+                    button.innerHTML = '<i class="fas fa-play"></i>';
+                } else {
+                    currentPlaying = index;
+                    button.innerHTML = '<i class="fas fa-pause"></i>';
+                    button.classList.add('active');
+                    button.closest('.music-card').classList.add('active');
+                }
+            }
+
+            // Favorite button functionality with touch support
+            document.querySelectorAll('.favorite-btn').forEach(btn => {
+                // Mouse click
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    handleFavoriteClick(this);
+                });
+                
+                // Touch support
+                btn.addEventListener('touchstart', function(e) {
+                    e.stopPropagation();
+                    handleFavoriteClick(this);
+                });
+            });
+
+            function handleFavoriteClick(button) {
+                const icon = button.querySelector('i');
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                    icon.classList.add('active');
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.remove('active');
+                    icon.classList.add('far');
+                }
+            }
+        
+            
+        
+            // Initialize the albums carousel
+            const albumsCarousel = document.getElementById('albumsCarousel');
+            const albumPrevBtn = document.querySelector('.music-section:last-of-type .nav-prev');
+            const albumNextBtn = document.querySelector('.music-section:last-of-type .nav-next');
+            
+            if (albumPrevBtn && albumNextBtn && albumsCarousel) {
+                albumPrevBtn.addEventListener('click', () => {
+                    // Check if we can scroll left
+                    if (albumsCarousel.scrollLeft > 0) {
+                        albumsCarousel.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+                    }
+                });
+                
+                albumNextBtn.addEventListener('click', () => {
+                    // Check if we can scroll right
+                    if (albumsCarousel.scrollLeft < albumsCarousel.scrollWidth - albumsCarousel.clientWidth) {
+                        albumsCarousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                    }
+                });
+                
+                // Add touch support for albums navigation buttons
+                albumPrevBtn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    // Check if we can scroll left
+                    if (albumsCarousel.scrollLeft > 0) {
+                        albumsCarousel.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+                    }
+                });
+                
+                albumNextBtn.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    // Check if we can scroll right
+                    if (albumsCarousel.scrollLeft < albumsCarousel.scrollWidth - albumsCarousel.clientWidth) {
+                        albumsCarousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

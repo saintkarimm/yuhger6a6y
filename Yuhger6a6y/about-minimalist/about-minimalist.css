@@ -1,0 +1,621 @@
+.minimalist-container {
+    font-family: 'Inter', sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* Navigation */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 50px;
+    position: relative;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 35px;
+    align-items: center;
+}
+
+.nav-link {
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: #cccccc;
+}
+
+.back-btn {
+    padding: 12px 24px;
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+}
+
+/* Hero Section */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 100px 50px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.hero-text {
+    padding-right: 20px;
+}
+
+.hero-title {
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 20px;
+    letter-spacing: -2px;
+    color: #ffffff;
+}
+
+.hero-subtitle {
+    font-size: 1.8rem;
+    color: #8a8a8a;
+    margin-bottom: 30px;
+    font-weight: 400;
+}
+
+.hero-description {
+    font-size: 1.3rem;
+    line-height: 1.7;
+    color: #cccccc;
+    margin-bottom: 50px;
+    max-width: 600px;
+}
+
+.hero-credentials {
+    display: flex;
+    gap: 40px;
+}
+
+.credential-item {
+    text-align: center;
+}
+
+.credential-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.credential-label {
+    font-size: 1rem;
+    color: #8a8a8a;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 400;
+}
+
+.hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.minimalist-portrait {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+}
+
+.portrait-image {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    filter: grayscale(100%) contrast(120%);
+    transition: all 0.5s ease;
+}
+
+.portrait-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(138, 43, 226, 0.1));
+    border-radius: 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.portrait-image:hover {
+    filter: grayscale(0%) contrast(100%);
+    transform: scale(1.02);
+}
+
+.portrait-image:hover + .portrait-overlay {
+    opacity: 1;
+}
+
+/* Philosophy Section */
+.philosophy-section {
+    padding: 120px 50px;
+    background-color: #0a0a0a;
+}
+
+.section-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 60px;
+    color: #ffffff;
+    letter-spacing: -1px;
+}
+
+.centered {
+    text-align: center;
+}
+
+.philosophy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.philosophy-quote {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: #cccccc;
+    margin-bottom: 50px;
+    padding: 30px;
+    border-left: 3px solid #ffffff;
+    background: rgba(255, 255, 255, 0.03);
+    line-height: 1.6;
+}
+
+.philosophy-principles {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.principle-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.principle-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.principle-icon i {
+    font-size: 1.5rem;
+    color: #ffffff;
+}
+
+.principle-text h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.principle-text p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #aaaaaa;
+}
+
+.philosophy-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.minimalist-visual {
+    position: relative;
+    width: 400px;
+    height: 400px;
+}
+
+.visual-element {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    animation: float 8s ease-in-out infinite;
+}
+
+.element-1 {
+    width: 300px;
+    height: 300px;
+    top: 50px;
+    left: 50px;
+    animation-delay: 0s;
+}
+
+.element-2 {
+    width: 200px;
+    height: 200px;
+    top: 100px;
+    left: 100px;
+    animation-delay: 2s;
+}
+
+.element-3 {
+    width: 100px;
+    height: 100px;
+    top: 150px;
+    left: 150px;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+    50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; }
+}
+
+/* Journey Section */
+.journey-section {
+    padding: 120px 50px;
+    background-color: #000000;
+}
+
+.timeline-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.timeline-item {
+    display: flex;
+    margin-bottom: 60px;
+    position: relative;
+}
+
+.timeline-marker {
+    width: 15px;
+    height: 15px;
+    background: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    left: 13px;
+    top: 10px;
+    z-index: 2;
+    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+.timeline-content {
+    flex: 1;
+    padding-left: 60px;
+    padding-top: 5px;
+}
+
+.timeline-year {
+    font-size: 1.1rem;
+    color: #8a8a8a;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.timeline-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.timeline-content p {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: #cccccc;
+}
+
+/* Achievements Section */
+.achievements-section {
+    padding: 120px 50px;
+    background-color: #0a0a0a;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.achievement-card {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 40px 30px;
+    border-radius: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.achievement-card:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.achievement-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.achievement-icon i {
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+.achievement-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.achievement-card p {
+    font-size: 1.1rem;
+    color: #aaaaaa;
+    line-height: 1.6;
+}
+
+/* Contact Section */
+.contact-section {
+    padding: 120px 50px;
+    background-color: #000000;
+    text-align: center;
+}
+
+.contact-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.contact-subtitle {
+    font-size: 1.3rem;
+    color: #aaaaaa;
+    margin-bottom: 50px;
+    line-height: 1.6;
+}
+
+.social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.social-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.social-link i {
+    font-size: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .hero-grid {
+        gap: 50px;
+    }
+    
+    .philosophy-grid {
+        gap: 50px;
+    }
+    
+    .hero-title {
+        font-size: 4rem;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 60px;
+    }
+    
+    .philosophy-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+    
+    .hero-text {
+        padding-right: 0;
+        order: 2;
+    }
+    
+    .hero-visual {
+        order: 1;
+    }
+    
+    .hero-title {
+        font-size: 3.5rem;
+    }
+    
+    .hero-credentials {
+        justify-content: center;
+    }
+    
+    .philosophy-quote {
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .hero-section {
+        padding: 80px 20px;
+    }
+    
+    .philosophy-section,
+    .journey-section,
+    .achievements-section,
+    .contact-section {
+        padding: 80px 20px;
+    }
+    
+    .hero-title {
+        font-size: 2.8rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .credential-item {
+        flex: 1;
+        min-width: 120px;
+    }
+    
+    .timeline-content {
+        padding-left: 40px;
+    }
+    
+    .social-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .credential-number {
+        font-size: 2rem;
+    }
+    
+    .achievement-card {
+        padding: 30px 20px;
+    }
+    
+    .philosophy-quote {
+        font-size: 1.2rem;
+        padding: 20px;
+    }
+}

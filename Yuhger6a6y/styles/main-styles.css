@@ -1,0 +1,363 @@
+/* Global Styles - Yuhger6a6y Website */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-dark: #0B0B0D;
+    --text-light: #FFFFFF;
+    --text-grey: #A3A3A3;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --accent-gold: #D4AF37;
+    --white-pill: #FFFFFF;
+    --pill-text: #0B0B0D;
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.3);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+    padding-top: 100px; /* Space for fixed navigation */
+}
+
+/* Glass Navigation */
+.nav {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    backdrop-filter: blur(20px);
+    background: var(--glass-bg);
+    border-bottom: 1px solid var(--glass-border);
+    border-radius: 0 0 20px 20px;
+}
+
+.nav-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 50px;
+}
+
+.nav-top-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+@media (max-width: 768px) {
+    .nav-top-right {
+        gap: 10px;
+    }
+}
+
+.nav-menu {
+    display: flex;
+    gap: 40px;
+    padding: 0 50px 20px 50px;
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+    .nav {
+        padding: 0;
+    }
+    
+    .nav-top {
+        padding: 15px 20px;
+        min-height: 60px;
+    }
+    
+    .nav-menu {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: rgba(11, 11, 13, 0.95); /* Dark background with high opacity for better readability */
+        backdrop-filter: blur(20px); /* Main glass effect */
+        -webkit-backdrop-filter: blur(20px); /* Safari support */
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* Stronger shadow for depth */
+        border-radius: 20px 20px 0 0; /* Rounded corners for iOS look */
+        flex-direction: column;
+        gap: 0;
+        padding: 20px;
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+        transition: clip-path 0.4s ease-in-out, opacity 0.4s ease-in-out;
+        display: block !important; /* Ensure display is block for mobile */
+        opacity: 0; /* Make sure the menu is hidden by default */
+        overflow: hidden; /* Contain the content nicely */
+    }
+    
+    .nav-menu.active {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        display: block !important; /* Ensure display is block when active */
+        opacity: 1; /* Make sure the menu is visible when active */
+    }
+    
+    .nav-link {
+        padding: 18px 0; /* Increased padding for better touch targets */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Lighter border */
+        display: block; /* Ensure links are displayed as blocks */
+        opacity: 1; /* Ensure links are visible */
+        color: var(--text-light);
+        text-decoration: none;
+        font-weight: 600; /* Slightly bolder font for better readability */
+        font-size: 18px; /* Larger font size for mobile */
+        transition: var(--transition);
+        position: relative;
+    }
+    
+    .nav-link:last-child {
+        border-bottom: none;
+    }
+    
+    .nav-link:hover {
+        color: var(--accent-gold);
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--accent-gold);
+        transition: var(--transition);
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    .logo {
+        font-size: 22px;
+    }
+    
+    .stream-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    body {
+        padding-top: 120px; /* Increased to accommodate expanded menu */
+    }
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+}
+
+/* Duplicate removed - merged with earlier definition */
+
+.nav-link {
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: var(--transition);
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--accent-gold);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-gold);
+    transition: var(--transition);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.stream-btn {
+    background: var(--white-pill);
+    color: var(--pill-text);
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.stream-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Button Styles */
+.btn-primary {
+    background: var(--white-pill);
+    color: var(--pill-text);
+    padding: 16px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 18px;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--white-pill);
+    padding: 16px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 18px;
+    transition: var(--transition);
+    border: 1px solid var(--glass-border);
+}
+
+.btn-secondary:hover {
+    background: var(--glass-bg);
+    transform: translateY(-3px);
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+}
+
+/* Card Styles */
+.music-card, .photo-card, .album-card, .contact-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.music-card:hover, .photo-card:hover, .album-card:hover, .contact-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Section Title */
+.section-title {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 50px;
+    text-align: center;
+    letter-spacing: -1px;
+    color: var(--text-light);
+}
+
+/* Form Elements */
+.form-input, .form-textarea {
+    width: 100%;
+    padding: 15px 20px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    color: var(--text-light);
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    transition: var(--transition);
+}
+
+.form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+.form-textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.social-link {
+    color: var(--text-light);
+    font-size: 20px;
+    transition: var(--transition);
+}
+
+.social-link:hover {
+    color: var(--accent-gold);
+    transform: translateY(-3px);
+}
+
+/* Footer */
+footer {
+    padding: 60px 50px 30px;
+    text-align: center;
+    color: var(--text-grey);
+    font-size: 14px;
+}
+
+/* Responsive adjustments for all pages */
+@media (max-width: 1024px) {
+    .section-title {
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 28px;
+    }
+    
+    .nav {
+        padding: 20px 25px;
+    }
+    
+    .nav-menu {
+        display: none;
+    }
+}

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquid Glass Button Card</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #8EC5FC, #E0C3FC);
+            background-attachment: fixed;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 40px;
+            font-weight: 600;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 60px;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .button-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px auto;
+            max-width: 400px;
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.1),
+                inset 0 2px 15px rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .button-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: radial-gradient(
+                circle at 30% 20%, 
+                rgba(255, 255, 255, 0.3) 0%, 
+                rgba(200, 200, 200, 0.15) 40%, 
+                transparent 70%
+            );
+            z-index: -1;
+            border-radius: 21px;
+            filter: blur(15px);
+            opacity: 0.4;
+            transition: all 0.4s ease;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .button-card:hover::before {
+            filter: blur(20px);
+            opacity: 0.6;
+            transform: scale(1.02);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .button-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.15),
+                inset 0 2px 20px rgba(255, 255, 255, 0.25);
+        }
+
+        .card-title {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .card-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .liquid-button {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 15px;
+            padding: 18px 36px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.08),
+                inset 0 2px 12px rgba(255, 255, 255, 0.25);
+        }
+
+        .liquid-button::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: radial-gradient(
+                circle at 30% 20%, 
+                rgba(255, 255, 255, 0.4) 0%, 
+                rgba(200, 200, 200, 0.2) 40%, 
+                transparent 70%
+            );
+            z-index: -1;
+            border-radius: 16px;
+            filter: blur(12px);
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .liquid-button:hover {
+            background: rgba(255, 255, 255, 0.28);
+            border-color: rgba(255, 255, 255, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.12),
+                inset 0 2px 15px rgba(255, 255, 255, 0.35);
+        }
+
+        .liquid-button:hover::before {
+            filter: blur(15px);
+            opacity: 0.7;
+            transform: scale(1.05);
+        }
+
+        .liquid-button:active {
+            transform: translateY(0px);
+            box-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.08),
+                inset 0 1px 8px rgba(255, 255, 255, 0.2);
+        }
+
+        .button-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            vertical-align: middle;
+        }
+
+        /* Additional liquid glass elements */
+        .secondary-button {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 12px;
+            padding: 12px 24px;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 0.9rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+            box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.15);
+        }
+
+        .secondary-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .button-card {
+                padding: 30px 20px;
+                margin: 15px;
+            }
+            
+            .liquid-button {
+                padding: 16px 32px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .button-card {
+                padding: 25px 15px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+            
+            .liquid-button {
+                padding: 14px 28px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Liquid Glass Button Card</h1>
+        <p class="subtitle">Experience the sleek, translucent design inspired by Apple's iOS 26 liquid glass aesthetic</p>
+        
+        <div class="button-card">
+            <h2 class="card-title">Premium Access</h2>
+            <p class="card-subtitle">Unlock exclusive features with our liquid glass interface</p>
+            
+            <button class="liquid-button">
+                <span class="button-icon">✨</span>
+                Activate Premium
+            </button>
+            
+            <div style="margin-top: 15px;">
+                <button class="secondary-button">Learn More</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add interactive effects to the button
+        document.addEventListener('DOMContentLoaded', function() {
+            const button = document.querySelector('.liquid-button');
+            
+            button.addEventListener('click', function() {
+                // Add ripple effect
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+                
+                // Show confirmation
+                alert('Premium activated! Enjoy your liquid glass experience.');
+            });
+            
+            // Add mouse move effect for more realism
+            const card = document.querySelector('.button-card');
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const angleY = (x - centerX) / 25;
+                const angleX = (centerY - y) / 25;
+                
+                card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-5px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(-5px)';
+            });
+        });
+    </script>
+</body>
+</html>

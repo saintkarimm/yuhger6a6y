@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yuhger6a6y - Contact</title>
+    <link rel="stylesheet" href="../styles/main-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .contact-container {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B0B0D;
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: rgba(11, 11, 13, 0.85);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .nav-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+        }
+        
+        .nav-top-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+            padding: 0 50px 20px 50px;
+        }
+
+        .nav-link {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-gold);
+        }
+        
+        /* Mobile-specific adjustments */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0;
+            }
+            
+            .nav-top {
+                padding: 15px 20px;
+                min-height: 60px;
+            }
+            
+            .nav-top-right {
+                gap: 10px;
+            }
+            
+            .nav-menu {
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: rgba(11, 11, 13, 0.95); /* Dark background with high opacity for better readability */
+                backdrop-filter: blur(20px); /* Main glass effect */
+                -webkit-backdrop-filter: blur(20px); /* Safari support */
+                border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* Stronger shadow for depth */
+                border-radius: 20px 20px 0 0; /* Rounded corners for iOS look */
+                flex-direction: column;
+                gap: 0;
+                padding: 20px;
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: clip-path 0.4s ease-in-out, opacity 0.4s ease-in-out;
+                display: block !important; /* Ensure display is block for mobile */
+                opacity: 0; /* Make sure the menu is hidden by default */
+                overflow: hidden; /* Contain the content nicely */
+            }
+            
+            .nav-menu.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                display: block !important; /* Ensure display is block when active */
+                opacity: 1; /* Make sure the menu is visible when active */
+            }
+            
+            .nav-link {
+                padding: 18px 0; /* Increased padding for better touch targets */
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Lighter border */
+                display: block; /* Ensure links are displayed as blocks */
+                opacity: 1; /* Ensure links are visible */
+                color: var(--text-light);
+                text-decoration: none;
+                font-weight: 600; /* Slightly bolder font for better readability */
+                font-size: 18px; /* Larger font size for mobile */
+                transition: var(--transition);
+                position: relative;
+            }
+            
+            .nav-link:last-child {
+                border-bottom: none;
+            }
+            
+            .nav-link:hover {
+                color: var(--accent-gold);
+            }
+
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: var(--accent-gold);
+                transition: var(--transition);
+            }
+
+            .nav-link:hover::after {
+                width: 100%;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .logo {
+                font-size: 22px;
+            }
+            
+            .stream-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            body {
+                padding-top: 120px; /* Increased to accommodate expanded menu */
+            }
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 250px 50px 150px;
+            text-align: center;
+            background: transparent;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 6rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -0.03em;
+            color: var(--text-light);
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            color: var(--text-grey);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .hero-description {
+            font-size: 1.3rem;
+            color: var(--text-grey);
+            margin-bottom: 0;
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Section Container */
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 50px;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 60px;
+            color: var(--text-light);
+            text-align: center;
+            letter-spacing: -1px;
+        }
+
+        /* Social Media Section */
+        .social-section {
+            padding: 100px 0;
+            background: transparent;
+        }
+
+        .social-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .social-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-decoration: none;
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            min-width: 200px;
+        }
+        
+        .social-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(200, 200, 200, 0.1), rgba(255, 255, 255, 0.1));
+            z-index: -1;
+            border-radius: 22px;
+            filter: blur(8px);
+            opacity: 0.7;
+            transition: all 0.4s ease;
+        }
+        
+        .social-card:hover::before {
+            filter: blur(12px);
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .social-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.2);
+        }
+
+        .social-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: var(--text-light);
+        }
+
+        .social-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .social-card p {
+            font-size: 1rem;
+            color: var(--text-grey);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Form Section */
+        .form-section {
+            padding: 100px 0;
+            background: transparent;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 50px;
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 40px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 0;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+            color: var(--text-light);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-bottom: 1px solid var(--accent-gold);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+            margin-top: 10px;
+        }
+
+        .submit-btn {
+            width: auto;
+            padding: 16px 40px;
+            background: white;
+            color: #0B0B0D;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .submit-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-item i {
+            font-size: 1.8rem;
+            color: var(--text-light);
+            min-width: 30px;
+        }
+
+        .info-text h4 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .info-text p {
+            font-size: 1.1rem;
+            color: var(--text-grey);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: transparent;
+            padding: 80px 50px 30px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .footer-section p {
+            font-size: 1rem;
+            color: var(--text-grey);
+            line-height: 1.6;
+            margin: 0;
+            max-width: 300px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section ul li a {
+            color: var(--text-grey);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--accent-gold);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", sans-serif;
+            font-weight: 900;
+        }
+
+        .social-links a:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--accent-gold);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Icon styling */
+        .fab, .fas, .far {
+            font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", sans-serif;
+            font-weight: 900;
+        }
+
+        /* Ensure icons are visible even if FA fails to load */
+        i[class^='fa-'] {
+            display: inline-block;
+            width: 1em;
+            text-align: center;
+            font-style: normal;
+        }
+
+        /* Specific footer social link icon styling */
+        .footer .social-links a i {
+            color: var(--text-light);
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+
+        .footer .social-links a:hover i {
+            color: var(--text-light);
+        }
+
+        /* Icon size adjustments */
+        .social-icon i {
+            font-size: 2.5rem;
+            color: var(--pill-text);
+        }
+
+        .info-item i {
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+            min-width: 30px;
+        }
+
+        .footer .social-links i {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Liquid glass enhancements */
+        .social-card {
+            position: relative;
+            overflow: visible;
+        }
+
+        .social-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(200, 200, 200, 0.05), rgba(255, 255, 255, 0.1));
+            z-index: -1;
+            border-radius: 22px;
+            filter: blur(4px);
+            opacity: 0.5;
+            transition: all 0.4s ease;
+        }
+
+        .social-card:hover::before {
+            filter: blur(6px);
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        .info-item {
+            position: relative;
+            overflow: visible;
+        }
+
+        .info-item::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(200, 200, 200, 0.1), rgba(255, 255, 255, 0.1));
+            z-index: -1;
+            border-radius: 17px;
+            filter: blur(5px);
+            opacity: 0.7;
+            transition: all 0.4s ease;
+        }
+
+        .info-item:hover::before {
+            filter: blur(8px);
+            opacity: 1;
+            transform: scale(1.02);
+        }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            font-size: 1rem;
+            color: var(--text-grey);
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .section-container {
+                padding: 0 30px;
+            }
+            
+            .hero-title {
+                font-size: 5rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .footer-content {
+                gap: 40px;
+            }
+            
+            .hero-section {
+                padding: 200px 30px 100px;
+            }
+            
+            .hero-title {
+                font-size: 4rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .social-grid {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+                margin: 15px;
+            }
+            
+            .nav-menu {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero-section {
+                padding: 150px 20px 80px;
+            }
+            
+            .section-container {
+                padding: 0 15px;
+            }
+            
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .social-section,
+            .form-section {
+                padding: 60px 0;
+            }
+            
+            .contact-form {
+                padding: 30px 20px;
+            }
+            
+            .form-container {
+                padding: 0 10px;
+            }
+            
+            .footer-content {
+                gap: 20px;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .social-grid,
+            .contact-info {
+                gap: 15px;
+            }
+            
+            .footer-bottom {
+                padding-top: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-title {
+                font-size: 2.8rem;
+                line-height: 1.1;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .hero-description {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 40px;
+            }
+            
+            .social-card {
+                padding: 20px 15px;
+                min-width: 150px;
+            }
+            
+            .social-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .social-card h3 {
+                font-size: 1.1rem;
+            }
+            
+            .social-card p {
+                font-size: 0.9rem;
+            }
+            
+            .contact-form {
+                padding: 25px 15px;
+            }
+            
+            .form-group input,
+            .form-group textarea {
+                padding: 8px 0;
+            }
+            
+            .info-item {
+                padding: 20px 15px;
+                min-width: 150px;
+            }
+            
+            .info-item i {
+                min-width: 24px;
+            }
+            
+            .footer {
+                padding: 60px 20px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.3rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .social-card {
+                padding: 18px 10px;
+                min-width: 140px;
+            }
+            
+            .social-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+            
+            .social-card h3 {
+                font-size: 1rem;
+            }
+            
+            .social-card p {
+                font-size: 0.85rem;
+            }
+            
+            .nav {
+                padding: 15px;
+                margin: 10px;
+            }
+            
+            .logo {
+                font-size: 24px;
+            }
+            
+            .nav-menu {
+                gap: 12px;
+            }
+            
+            .nav-link {
+                font-size: 14px;
+            }
+            
+            .info-item {
+                flex-direction: column;
+                gap: 15px;
+                padding: 18px;
+            }
+            
+            .info-text h4 {
+                font-size: 1.2rem;
+            }
+            
+            .info-text p {
+                font-size: 1rem;
+            }
+            
+            .footer-section h3 {
+                font-size: 1.4rem;
+            }
+            
+            .footer-section h4 {
+                font-size: 1.1rem;
+            }
+            
+            .social-links a {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .footer-bottom p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contact-container">
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="nav-top">
+                <a href="../index.html" class="logo">Yuhger6a6y</a>
+                <div class="nav-top-right">
+                    <a href="https://linktr.ee/yuhger6a6y" class="stream-btn">Stream</a>
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="../music.html" class="nav-link">Music</a>
+                <a href="../gallery.html" class="nav-link">Gallery</a>
+                <a href="../about-photography/about-photography.html" class="nav-link">About</a>
+                <a href="../player/advanced-player.html" class="nav-link">Player</a>
+                <a href="../album-timeline/album-timeline.html" class="nav-link">Albums</a>
+                <a href="../contact/contact.html" class="nav-link">Contact</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">Let's Work.</h1>
+            </div>
+        </section>
+
+        <!-- Social Media Section -->
+        <section class="social-section">
+            <div class="section-container">
+                <div class="social-grid">
+                    <a href="https://open.spotify.com/artist/1NdphMq7y359rUPLRNsODE?si=X-w4qDBGRXeNnaaBuoPSvg" class="social-card" target="_blank">
+                        <div class="social-icon">
+                            <i class="fab fa-spotify"></i>
+                        </div>
+                        <h3>Spotify</h3>
+                        <p>Listen</p>
+                    </a>
+                    <a href="https://instagram.com/yuhger6a6y" class="social-card" target="_blank">
+                        <div class="social-icon">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                        <h3>Instagram</h3>
+                        <p>Follow</p>
+                    </a>
+                    <a href="https://x.com/yuhger6a6y" class="social-card" target="_blank">
+                        <div class="social-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50">
+                                <path d="M 6.9199219 6 L 21.136719 26.726562 L 6.2285156 44 L 9.40625 44 L 22.544922 28.777344 L 32.986328 44 L 43 44 L 28.123047 22.3125 L 42.203125 6 L 39.027344 6 L 26.716797 20.261719 L 16.933594 6 L 6.9199219 6 z" fill="currentColor"></path>
+                            </svg>
+                        </div>
+                        <h3>X</h3>
+                        <p>Updates</p>
+                    </a>
+                    <a href="https://www.youtube.com/@yuhger6a6y" class="social-card" target="_blank">
+                        <div class="social-icon">
+                            <i class="fab fa-youtube"></i>
+                        </div>
+                        <h3>YouTube</h3>
+                        <p>Watch</p>
+                    </a>
+                    <a href="https://wa.me/+233550838063" class="social-card" target="_blank">
+                        <div class="social-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <h3>WhatsApp</h3>
+                        <p>Message</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section class="form-section">
+            <div class="form-container">
+                <form class="contact-form">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" placeholder="Message" rows="6" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        Let's Work
+                    </button>
+                </form>
+                <div class="contact-info">
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div class="info-text">
+                            <h4>Email</h4>
+                            <a href="mailto:yuhger6a6ybookings@gmail.com" style="color: var(--text-grey); text-decoration: none;">
+                                <p>yuhger6a6ybookings@gmail.com</p>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <div class="info-text">
+                            <h4>Phone</h4>
+                            <a href="tel:+233550838063" style="color: var(--text-grey); text-decoration: none;">
+                                <p>+233 550 838 063</p>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="info-text">
+                            <h4>Based In</h4>
+                            <p>Accra, Ghana</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>Yuhger6a6y</h3>
+                        <p>Visionary artist creating immersive soundscapes that connect with listeners on a profound level.</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="../index.html">Home</a></li>
+                            <li><a href="../music.html">Music</a></li>
+                            <li><a href="../about-photography/about-photography.html">About</a></li>
+                            <li><a href="../gallery.html">Gallery</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Follow Me</h4>
+                        <div class="social-links">
+                            <a href="https://open.spotify.com/artist/1NdphMq7y359rUPLRNsODE?si=X-w4qDBGRXeNnaaBuoPSvg" target="_blank"><i class="fab fa-spotify"></i></a>
+                            <a href="https://instagram.com/yuhger6a6y" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://x.com/yuhger6a6y" target="_blank">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50">
+                                    <path d="M 6.9199219 6 L 21.136719 26.726562 L 6.2285156 44 L 9.40625 44 L 22.544922 28.777344 L 32.986328 44 L 43 44 L 28.123047 22.3125 L 42.203125 6 L 39.027344 6 L 26.716797 20.261719 L 16.933594 6 L 6.9199219 6 z" fill="currentColor"></path>
+                                </svg>
+                            </a>
+                            <a href="https://www.youtube.com/@yuhger6a6y" target="_blank"><i class="fab fa-youtube"></i></a>
+                            <a href="https://www.tiktok.com/@yuhger6a6y" target="_blank"><i class="fab fa-tiktok"></i></a>
+                            <a href="https://wa.me/+233550838063" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2026 Yuhger6a6y. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            // Add the navigation toggle functionality
+            document.addEventListener('DOMContentLoaded', function() {
+                // Mobile menu toggle functionality
+                const menuToggle = document.getElementById('menuToggle');
+                const navMenu = document.getElementById('navMenu');
+                
+                if (menuToggle && navMenu) {
+                    menuToggle.addEventListener('click', function() {
+                        navMenu.classList.toggle('active');
+                        // Toggle the icon between bars and close (X)
+                        const icon = menuToggle.querySelector('i');
+                        if (navMenu.classList.contains('active')) {
+                            icon.classList.remove('fa-bars');
+                            icon.classList.add('fa-times');
+                        } else {
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
+                    });
+                    
+                    // Close menu when clicking on a link
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.addEventListener('click', () => {
+                            navMenu.classList.remove('active');
+                            // Reset icon to bars
+                            const icon = menuToggle.querySelector('i');
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        });
+                    });
+                    
+                    // Close menu when clicking outside
+                    document.addEventListener('click', function(event) {
+                        const isClickInsideNav = menuToggle.contains(event.target) || navMenu.contains(event.target);
+                        
+                        if (!isClickInsideNav && navMenu.classList.contains('active')) {
+                            navMenu.classList.remove('active');
+                            // Reset icon to bars
+                            const icon = menuToggle.querySelector('i');
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
+                    });
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>

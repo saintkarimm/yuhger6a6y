@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yuhger6a6y - Latest Drop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --off-white: #fafaf9;
+            --soft-beige: #f5f5f4;
+            --light-gray: #e7e5e4;
+            --medium-gray: #d6d3d1;
+            --dark-gray: #a8a29e;
+            --black: #0f0f0f;
+            --white: #ffffff;
+            --shadow-light: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-heavy: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--soft-beige);
+            color: var(--black);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            position: relative;
+            z-index: 1000;
+            background-color: var(--off-white);
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .logo {
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--black);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--black);
+            text-decoration: none;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--dark-gray);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--black);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .back-btn {
+            padding: 12px 24px;
+            background-color: var(--black);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background-color: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Latest Drop Section */
+        .latest-drop {
+            padding: 100px 50px;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--black);
+            margin-bottom: 60px;
+            letter-spacing: -1px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .music-card {
+            display: inline-flex;
+            align-items: center;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: var(--shadow-medium);
+            transition: var(--transition);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .music-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .album-cover {
+            width: 150px;
+            height: 150px;
+            border-radius: 12px;
+            margin-right: 30px;
+            object-fit: cover;
+            box-shadow: var(--shadow-light);
+            transition: transform 0.3s ease;
+        }
+
+        .music-card:hover .album-cover {
+            transform: scale(1.05);
+        }
+
+        .track-info {
+            text-align: left;
+            flex: 1;
+        }
+
+        .track-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 12px;
+            letter-spacing: -0.3px;
+        }
+
+        .track-meta {
+            font-size: 18px;
+            color: var(--dark-gray);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .track-description {
+            font-size: 16px;
+            color: var(--dark-gray);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--black);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 20px;
+            margin-left: auto;
+        }
+
+        .play-btn:hover {
+            background-color: #1a1a1a;
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .play-btn.active {
+            background: linear-gradient(45deg, #8a2be2, #00ffff);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
+            50% { transform: scale(1.1); box-shadow: 0 4px 20px rgba(138, 43, 226, 0.4); }
+        }
+
+        /* Waveform animation */
+        .waveform-bar {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 30px;
+            margin: 20px 0;
+        }
+
+        .waveform-bar div {
+            width: 4px;
+            background: linear-gradient(to top, #8a2be2, #00ffff);
+            border-radius: 2px;
+            animation: waveform 1.2s ease-in-out infinite;
+        }
+
+        .waveform-bar div:nth-child(2n) { animation-delay: 0.1s; }
+        .waveform-bar div:nth-child(3n) { animation-delay: 0.2s; }
+        .waveform-bar div:nth-child(4n) { animation-delay: 0.3s; }
+
+        @keyframes waveform {
+            0%, 100% { transform: scaleY(0.3); opacity: 0.4; }
+            50% { transform: scaleY(1); opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .section-title {
+                font-size: 36px;
+                margin-bottom: 40px;
+            }
+
+            .music-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 25px;
+                max-width: 90%;
+            }
+
+            .album-cover {
+                margin-right: 0;
+                margin-bottom: 25px;
+                width: 130px;
+                height: 130px;
+            }
+
+            .track-info {
+                text-align: center;
+            }
+            
+            .track-title {
+                font-size: 26px;
+            }
+            
+            .track-meta {
+                font-size: 16px;
+            }
+            
+            .track-description {
+                font-size: 15px;
+            }
+
+            .play-btn {
+                margin: 20px auto 0;
+                width: 50px;
+                height: 50px;
+                font-size: 16px;
+            }
+            
+            .waveform-bar {
+                justify-content: center;
+                height: 25px;
+            }
+            
+            .waveform-bar div {
+                width: 3px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .latest-drop {
+                padding: 60px 15px;
+            }
+            
+            .nav {
+                padding: 15px;
+            }
+
+            .section-title {
+                font-size: 32px;
+                margin-bottom: 30px;
+            }
+
+            .music-card {
+                padding: 20px;
+            }
+
+            .album-cover {
+                width: 110px;
+                height: 110px;
+            }
+            
+            .track-title {
+                font-size: 22px;
+            }
+            
+            .track-meta {
+                font-size: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .track-description {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+
+            .play-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 14px;
+            }
+        }
+        
+        /* Mobile-specific touch enhancements */
+        @media (hover: none) and (pointer: coarse) {
+            .music-card:hover {
+                transform: none;
+                box-shadow: var(--shadow-medium);
+            }
+            
+            .album-cover:hover {
+                transform: none;
+            }
+            
+            .play-btn:hover {
+                transform: none;
+            }
+            
+            .play-btn:active {
+                transform: scale(0.95);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="index.html" class="logo">Yuhger6a6y</a>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="music.html" class="nav-link">Music</a>
+            <a href="gallery.html" class="nav-link">Gallery</a>
+            <a href="about-photography/about-photography.html" class="nav-link">About</a>
+            <a href="player/advanced-player.html" class="nav-link">Player</a>
+            <a href="album-timeline/album-timeline.html" class="nav-link">Albums</a>
+            <a href="contact/contact.html" class="nav-link">Contact</a>
+        </div>
+        <a href="index.html" class="back-btn">Back to Home</a>
+    </nav>
+
+    <!-- Latest Drop Section -->
+    <section class="latest-drop">
+        <h2 class="section-title">Latest Drop</h2>
+        <div class="music-card">
+            <img src="images/best lifes.jpeg" alt="Latest Drop" class="album-cover">
+            <div class="track-info">
+                <h3 class="track-title">Best Lies</h3>
+                <p class="track-meta">Single · 2026</p>
+                <p class="track-description">
+                    A haunting blend of electronic beats and soulful vocals that captures the essence of late-night contemplation. 
+                    This track represents the evolution of Yuhger6a6y's signature sound with innovative production techniques.
+                </p>
+                <div class="waveform-bar">
+                    <div style="height: 12px;"></div>
+                    <div style="height: 18px;"></div>
+                    <div style="height: 24px;"></div>
+                    <div style="height: 16px;"></div>
+                    <div style="height: 20px;"></div>
+                    <div style="height: 14px;"></div>
+                    <div style="height: 22px;"></div>
+                </div>
+            </div>
+            <button class="play-btn" id="playButton">
+                <i class="fas fa-play"></i>
+            </button>
+        </div>
+    </section>
+
+    <script>
+        // Play button functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const playButton = document.getElementById('playButton');
+            let isPlaying = false;
+
+            if (playButton) {
+                playButton.addEventListener('click', function() {
+                    if (isPlaying) {
+                        // Pause
+                        this.innerHTML = '<i class="fas fa-play"></i>';
+                        this.classList.remove('active');
+                        isPlaying = false;
+                    } else {
+                        // Play
+                        this.innerHTML = '<i class="fas fa-pause"></i>';
+                        this.classList.add('active');
+                        isPlaying = true;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

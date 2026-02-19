@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Yuhger6a6y</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/main-styles.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Gallery Header */
+        .gallery-header {
+            padding: 120px 80px 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .gallery-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .gallery-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background-color: var(--accent-gold);
+        }
+
+        .gallery-subtitle {
+            font-size: 20px;
+            color: var(--text-grey);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Gallery Container */
+        .main-gallery {
+            padding: 20px 50px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        .photo-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .photo-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-info {
+            padding: 20px;
+        }
+
+        .photo-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-light);
+        }
+
+        .photo-meta {
+            font-size: 14px;
+            color: var(--text-grey);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 900px;
+            max-height: 80vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: contain;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2001;
+        }
+
+        .close:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .gallery-header {
+                padding: 120px 20px 40px;
+            }
+            
+            .gallery-title {
+                font-size: 36px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+            
+            .photo-img {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-header {
+                padding: 120px 15px 30px;
+            }
+            
+            .gallery-title {
+                font-size: 28px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .photo-img {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-top">
+            <a href="index.html" class="logo">Yuhger6a6y</a>
+            <div class="nav-top-right">
+                <a href="https://linktr.ee/yuhger6a6y" class="stream-btn">Stream</a>
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="music.html" class="nav-link">Music</a>
+            <a href="gallery.html" class="nav-link">Gallery</a>
+            <a href="about-photography/about-photography.html" class="nav-link">About</a>
+            <a href="player/advanced-player.html" class="nav-link">Player</a>
+            <a href="album-timeline/album-timeline.html" class="nav-link">Albums</a>
+            <a href="contact/contact.html" class="nav-link">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Gallery Header -->
+    <header class="gallery-header">
+        <h1 class="gallery-title">Gallery</h1>
+        <p class="gallery-subtitle">A collection of moments captured in time</p>
+    </header>
+
+    <!-- Main Gallery -->
+    <main class="main-gallery">
+        <div class="gallery-grid">
+            <!-- Photo Cards -->
+            <div class="photo-card">
+                <img src="gallery/03b53bc8-d2a4-4e53-8b83-60c617040584.JPG" alt="Photo 1" class="photo-img" onclick="openModal(this.src)">
+                <div class="photo-info">
+                    <h3 class="photo-title">Creative Moment #1</h3>
+                    <p class="photo-meta">Captured with passion</p>
+                </div>
+            </div>
+            
+            <div class="photo-card">
+                <img src="gallery/25282c04-a1df-4743-9b37-0005b733999b.JPG" alt="Photo 2" class="photo-img" onclick="openModal(this.src)">
+                <div class="photo-info">
+                    <h3 class="photo-title">Creative Moment #2</h3>
+                    <p class="photo-meta">Artistic expression</p>
+                </div>
+            </div>
+            
+            <div class="photo-card">
+                <img src="gallery/271c563a-1d0f-40a8-8d74-39fc7201ea25.JPG" alt="Photo 3" class="photo-img" onclick="openModal(this.src)">
+                <div class="photo-info">
+                    <h3 class="photo-title">Creative Moment #3</h3>
+                    <p class="photo-meta">Inspired creation</p>
+                </div>
+            </div>
+            
+            <div class="photo-card">
+                <img src="gallery/2b5ffa76-ea90-4980-88a1-fd2fc3172b36.JPG" alt="Photo 4" class="photo-img" onclick="openModal(this.src)">
+                <div class="photo-info">
+                    <h3 class="photo-title">Creative Moment #4</h3>
+                    <p class="photo-meta">Visual storytelling</p>
+                </div>
+            </div>
+            
+            <div class="photo-card">
+                <img src="gallery/3080d104-e75f-48fb-98ea-598302cf4420.JPG" alt="Photo 5" class="photo-img" onclick="openModal(this.src)">
+                <div class="photo-info">
+                    <h3 class="photo-title">Creative Moment #5</h3>
+                    <p class="photo-meta">Artistic vision</p>
+                </div>
+            </div>
+            
+            <div class="photo-card">
+                <img src="gallery/55846dec-41d9-439e-a8ec-1100731d736e.JPG" alt="Photo 6" class="photo-img" onclick="openModal(this.src)">
+                <div class="photo-info">
+                    <h3 class="photo-title">Creative Moment #6</h3>
+                    <p class="photo-meta">Creative process</p>
+                </div>
+            </div>
+            
+            <div class="photo-card">
+                <img src="gallery/57fd4e55-dc2c-417f-afac-9052f2596178.JPG" alt="Photo 7" class="photo-img" onclick="openModal(this.src)">
+                <div class="photo-info">
+                    <h3 class="photo-title">Creative Moment #7</h3>
+                    <p class="photo-meta">Artistic journey</p>
+                </div>
+            </div>
+            
+            <div class="photo-card">
+                <img src="gallery/5faddef0-6ad7-4c64-afe9-e1ab39ebfa80.JPG" alt="Photo 8" class="photo-img" onclick="openModal(this.src)">
+                <div class="photo-info">
+                    <h3 class="photo-title">Creative Moment #8</h3>
+                    <p class="photo-meta">Visual narrative</p>
+                </div>
+            </div>
+            
+            <div class="photo-card">
+                <img src="gallery/631d656e-6f61-4966-94d5-4f8835b405ce.JPG" alt="Photo 9" class="photo-img" onclick="openModal(this.src)">
+                <div class="photo-info">
+                    <h3 class="photo-title">Creative Moment #9</h3>
+                    <p class="photo-meta">Creative expression</p>
+                </div>
+            </div>
+            
+            <div class="photo-card">
+                <img src="gallery/6636c441-9c60-432a-99a2-efbd7b5065fc.JPG" alt="Photo 10" class="photo-img" onclick="openModal(this.src)">
+                <div class="photo-info">
+                    <h3 class="photo-title">Creative Moment #10</h3>
+                    <p class="photo-meta">Artistic perspective</p>
+                </div>
+            </div>
+            
+            <div class="photo-card">
+                <img src="gallery/6bc2709b-25a7-44e4-a5d5-cee584a79f8b.JPG" alt="Photo 11" class="photo-img" onclick="openModal(this.src)">
+                <div class="photo-info">
+                    <h3 class="photo-title">Creative Moment #11</h3>
+                    <p class="photo-meta">Creative vision</p>
+                </div>
+            </div>
+            
+            <div class="photo-card">
+                <img src="gallery/844f88c6-d6ed-40dc-b2c6-d17508bc38c5.JPG" alt="Photo 12" class="photo-img" onclick="openModal(this.src)">
+                <div class="photo-info">
+                    <h3 class="photo-title">Creative Moment #12</h3>
+                    <p class="photo-meta">Artistic inspiration</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        // Add the navigation toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle functionality
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    // Toggle the icon between bars and close (X)
+                    const icon = menuToggle.querySelector('i');
+                    if (navMenu.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+                
+                // Close menu when clicking on a link
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navMenu.classList.remove('active');
+                        // Reset icon to bars
+                        const icon = menuToggle.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    });
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    const isClickInsideNav = menuToggle.contains(event.target) || navMenu.contains(event.target);
+                    
+                    if (!isClickInsideNav && navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                        // Reset icon to bars
+                        const icon = menuToggle.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            }
+        });
+
+        // Modal functionality
+        function openModal(src) {
+            document.getElementById('imageModal').style.display = 'block';
+            document.getElementById('modalImage').src = src;
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside the image
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

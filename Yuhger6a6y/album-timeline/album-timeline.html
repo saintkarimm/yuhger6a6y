@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yuhger6a6y - Albums</title>
+    <link rel="stylesheet" href="../styles/main-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0B0B0D 0%, #000000 100%);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Cinematic radial glow background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: var(--glass-bg);
+            border-bottom: 1px solid var(--glass-border);
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .nav-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+        }
+        
+        .nav-top-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+            padding: 0 50px 20px 50px;
+        }
+
+        .nav-link {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-gold);
+        }
+        
+        /* Mobile-specific adjustments */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0;
+            }
+            
+            .nav-top {
+                padding: 15px 20px;
+                min-height: 60px;
+            }
+            
+            .nav-top-right {
+                gap: 10px;
+            }
+            
+            .nav-menu {
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: rgba(11, 11, 13, 0.95); /* Dark background with high opacity for better readability */
+                backdrop-filter: blur(20px); /* Main glass effect */
+                -webkit-backdrop-filter: blur(20px); /* Safari support */
+                border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* Stronger shadow for depth */
+                border-radius: 20px 20px 0 0; /* Rounded corners for iOS look */
+                flex-direction: column;
+                gap: 0;
+                padding: 20px;
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: clip-path 0.4s ease-in-out, opacity 0.4s ease-in-out;
+                display: block !important; /* Ensure display is block for mobile */
+                opacity: 0; /* Make sure the menu is hidden by default */
+                overflow: hidden; /* Contain the content nicely */
+            }
+            
+            .nav-menu.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                display: block !important; /* Ensure display is block when active */
+                opacity: 1; /* Make sure the menu is visible when active */
+            }
+            
+            .nav-link {
+                padding: 18px 0; /* Increased padding for better touch targets */
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Lighter border */
+                display: block; /* Ensure links are displayed as blocks */
+                opacity: 1; /* Ensure links are visible */
+                color: var(--text-light);
+                text-decoration: none;
+                font-weight: 600; /* Slightly bolder font for better readability */
+                font-size: 18px; /* Larger font size for mobile */
+                transition: var(--transition);
+                position: relative;
+            }
+            
+            .nav-link:last-child {
+                border-bottom: none;
+            }
+            
+            .nav-link:hover {
+                color: var(--accent-gold);
+            }
+
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: var(--accent-gold);
+                transition: var(--transition);
+            }
+
+            .nav-link:hover::after {
+                width: 100%;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .logo {
+                font-size: 22px;
+            }
+            
+            .stream-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            body {
+                padding-top: 120px; /* Increased to accommodate expanded menu */
+            }
+        }
+        
+        .back-btn {
+            background: var(--white-pill);
+            color: var(--pill-text);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+        }
+
+        .back-btn:hover {
+            background: var(--white-pill);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+            color: var(--pill-text);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 150px 50px 80px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 800;
+            background: linear-gradient(to right, #ffffff, #D4AF37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: var(--text-grey);
+            margin-top: 1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 300;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 40px 50px 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .albums-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        /* Album Card */
+        .album-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .album-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4),
+                        0 0 50px rgba(212, 175, 55, 0.15);
+        }
+        
+        /* Album Art Container */
+        .album-art-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            background: linear-gradient(45deg, #222, #444);
+        }
+        
+        .album-art {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        
+        .album-card:hover .album-art {
+            transform: scale(1.05);
+        }
+        
+        /* Album Info */
+        .album-info {
+            padding: 30px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .album-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin: 0 0 8px 0;
+            letter-spacing: -0.02em;
+        }
+        
+        .album-date {
+            font-size: 1rem;
+            color: var(--text-grey);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+        
+        .album-description {
+            font-size: 1rem;
+            color: var(--text-grey);
+            line-height: 1.6;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+        
+        /* Album Stats */
+        .album-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+        
+        .stat {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #D4AF37;
+            margin-bottom: 5px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-grey);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Tracklist */
+        .tracklist {
+            margin-bottom: 25px;
+        }
+        
+        .tracklist h3 {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin: 0 0 15px 0;
+            font-weight: 600;
+        }
+        
+        .tracks {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .tracks li {
+            padding: 8px 0;
+            color: var(--text-grey);
+            border-bottom: 1px solid var(--glass-border);
+            font-size: 0.95rem;
+        }
+        
+        .tracks li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Streaming Platforms */
+        .streaming-platforms {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .platform-btn {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-light);
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .platform-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            color: #D4AF37;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Back to Top Button */
+        .album-back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-gold);
+            color: var(--pill-text);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .album-back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .album-back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .albums-container {
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                gap: 30px;
+            }
+            
+            .hero-section {
+                padding: 120px 30px 60px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .albums-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                max-width: 90%;
+                margin: 0 auto;
+            }
+            
+            .hero-section {
+                padding: 100px 20px 50px;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .main-content {
+                padding: 30px 20px 80px;
+            }
+            
+            .album-stats {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+            
+            .stat {
+                flex: none;
+            }
+            
+            .album-card {
+                max-width: 100%;
+                margin: 0 auto;
+            }
+            
+            .album-info {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .albums-container {
+                max-width: 95%;
+                gap: 25px;
+            }
+            
+            .hero-section {
+                padding: 80px 15px 40px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .album-info {
+                padding: 20px;
+            }
+            
+            .streaming-platforms {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .platform-btn {
+                flex: 1 1 45%;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            
+            .album-stats {
+                flex-wrap: wrap;
+            }
+            
+            .stat {
+                flex: 1 1 45%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-top">
+            <a href="../index.html" class="logo">Yuhger6a6y</a>
+            <div class="nav-top-right">
+                <a href="https://linktr.ee/yuhger6a6y" class="stream-btn">Stream</a>
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <a href="../index.html" class="nav-link">Home</a>
+            <a href="../music.html" class="nav-link">Music</a>
+            <a href="../gallery.html" class="nav-link">Gallery</a>
+            <a href="../about-photography/about-photography.html" class="nav-link">About</a>
+            <a href="../player/advanced-player.html" class="nav-link">Player</a>
+            <a href="../album-timeline/album-timeline.html" class="nav-link">Albums</a>
+            <a href="../contact/contact.html" class="nav-link">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">ALBUMS</h1>
+            <p class="hero-subtitle">A curated collection of Yuhger6a6y's musical journey</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="albums-container">
+                <!-- Album 1: S**TAPE -->
+                <article class="album-card">
+                    <div class="album-art-container">
+                        <img src="../images/sex tape.jpeg" alt="S**TAPE Album Cover" class="album-art">
+                    </div>
+                    <div class="album-info">
+                        <h2 class="album-title">S**TAPE</h2>
+                        <p class="album-date">July 8 • 2025</p>
+                        <p class="album-description">
+                            A haunting collection of nocturnal soundscapes that capture the essence of sleepless nights. 
+                            Features collaborations with renowned electronic artists and innovative production techniques.
+                        </p>
+                        <div class="album-stats">
+                            <div class="stat">
+                                <span class="stat-number">3</span>
+                                <span class="stat-label">Tracks</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">7:00</span>
+                                <span class="stat-label">Duration</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">4.8</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="tracklist">
+                            <h3>Tracklist</h3>
+                            <ol class="tracks">
+                                <li>Side 6</li>
+                                <li>SLATT(Hol On)</li>
+                                <li>Space Mood</li>
+                            </ol>
+                        </div>
+                        <div class="streaming-platforms">
+                            <a href="https://open.spotify.com/album/6zJef8EF2R5XqU8CQ71Yg9" class="platform-btn" target="_blank">Spotify</a>
+                            <a href="https://music.apple.com/us/album/s-tape-single/1824822405" class="platform-btn" target="_blank">Apple Music</a>
+                            <a href="https://www.youtube.com/watch?v=OCnc5riQGjY&list=RDOCnc5riQGjY&start_radio=1" class="platform-btn" target="_blank">YouTube</a>
+                            <a href="https://audiomack.com/yuhger6a6y/album/s-tape" class="platform-btn" target="_blank">AudioMack</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Album 2: 3 Girls -->
+                <article class="album-card">
+                    <div class="album-art-container">
+                        <img src="../images/album-3girls.jpeg" alt="3 Girls Album Cover" class="album-art">
+                    </div>
+                    <div class="album-info">
+                        <h2 class="album-title">3 Girls</h2>
+                        <p class="album-date">Oct 1 • 2022</p>
+                        <p class="album-description">
+                            A breakthrough release that blends analog warmth with digital precision. 
+                            This album marked a turning point in Yuhger6a6y's artistic evolution.
+                        </p>
+                        <div class="album-stats">
+                            <div class="stat">
+                                <span class="stat-number">3</span>
+                                <span class="stat-label">Tracks</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">9:00</span>
+                                <span class="stat-label">Duration</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">4.7</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="tracklist">
+                            <h3>Tracklist</h3>
+                            <ol class="tracks">
+                                <li>BAD GIRL</li>
+                                <li>HOT</li>
+                                <li>WRONG THINGS</li>
+                            </ol>
+                        </div>
+                        <div class="streaming-platforms">
+                            <a href="https://audiomack.com/yuhger6a6y/album/3-girls" class="platform-btn" target="_blank">AudioMack</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Album 3: Y 4 Yrazy -->
+                <article class="album-card">
+                    <div class="album-art-container">
+                        <img src="../images/Y 4 Yrazy.jpeg" alt="Y 4 Yrazy" class="album-art">
+                    </div>
+                    <div class="album-info">
+                        <h2 class="album-title">Y 4 Yrazy</h2>
+                        <p class="album-date">Feb 1 • 2025</p>
+                        <p class="album-description">
+                            An experimental EP that explores the intersection of electronic and organic sounds. 
+                            Features innovative visual components and interactive elements.
+                        </p>
+                        <div class="album-stats">
+                            <div class="stat">
+                                <span class="stat-number">1</span>
+                                <span class="stat-label">Tracks</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">2:24</span>
+                                <span class="stat-label">Duration</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">4.9</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="tracklist">
+                            <h3>Tracklist</h3>
+                            <ol class="tracks">
+                                <li>Y 4 Yrazy</li>
+                            </ol>
+                        </div>
+                        <div class="streaming-platforms">
+                            <a href="https://open.spotify.com/album/3kAjfFsUj8McIixlWI1vc9" class="platform-btn" target="_blank">Spotify</a>
+                            <a href="https://music.apple.com/us/album/y-4-yrazy-feat-6-6yuhger/1794485014?i=1794485015" class="platform-btn" target="_blank">Apple Music</a>
+                            <a href="https://www.youtube.com/watch?v=Qdc7oxSg5O0&list=RDQdc7oxSg5O0&start_radio=1" class="platform-btn" target="_blank">YouTube</a>
+                            <a href="https://audiomack.com/yuhger6a6y/song/y4yrazy" class="platform-btn" target="_blank">AudioMack</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Album 4: YWW -->
+                <article class="album-card">
+                    <div class="album-art-container">
+                        <img src="../images/YWW.jpeg" alt="YWW Album Cover" class="album-art">
+                    </div>
+                    <div class="album-info">
+                        <h2 class="album-title">YWW</h2>
+                        <p class="album-date">March 10 • 2025</p>
+                        <p class="album-description">
+                            Debut full-length album that established Yuhger6a6y's signature sound. 
+                            A blend of ambient textures and rhythmic foundations.
+                        </p>
+                        <div class="album-stats">
+                            <div class="stat">
+                                <span class="stat-number">1</span>
+                                <span class="stat-label">Tracks</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">2:12</span>
+                                <span class="stat-label">Duration</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">4.6</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="tracklist">
+                            <h3>Tracklist</h3>
+                            <ol class="tracks">
+                                <li>YWW</li>
+                            </ol>
+                        </div>
+                        <div class="streaming-platforms">
+                            <a href="https://open.spotify.com/album/6fMNc4klh9joiHZAf8dIyH" class="platform-btn" target="_blank">Spotify</a>
+                            <a href="https://music.apple.com/us/album/yww-single/1800913082" class="platform-btn" target="_blank">Apple Music</a>
+                            <a href="https://www.youtube.com/watch?v=2BNxILyJJQU&list=RD2BNxILyJJQU&start_radio=1" class="platform-btn" target="_blank">YouTube</a>
+                            <a href="https://audiomack.com/yuhger6a6y/song/yww" class="platform-btn" target="_blank">AudioMack</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Album 5: YuhGerLife -->
+                <article class="album-card">
+                    <div class="album-art-container">
+                        <img src="../images/YugerLife.jpeg" alt="YuhGerLife Album Cover" class="album-art">
+                    </div>
+                    <div class="album-info">
+                        <h2 class="album-title">YuhGerLife</h2>
+                        <p class="album-date">April 10 • 2025</p>
+                        <p class="album-description">
+                            A minimalist approach to electronic music with focus on texture and atmosphere. 
+                            Explores the beauty in imperfection and analog noise.
+                        </p>
+                        <div class="album-stats">
+                            <div class="stat">
+                                <span class="stat-number">1</span>
+                                <span class="stat-label">Tracks</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">3:12</span>
+                                <span class="stat-label">Duration</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">4.5</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="tracklist">
+                            <h3>Tracklist</h3>
+                            <ol class="tracks">
+                                <li>YuhGerLife</li>
+                            </ol>
+                        </div>
+                        <div class="streaming-platforms">
+                            <a href="https://open.spotify.com/album/5LUa467h3W600f7cKnReg6" class="platform-btn" target="_blank">Spotify</a>
+                            <a href="https://music.apple.com/us/album/yuhgerlife-single/1807107795" class="platform-btn" target="_blank">Apple Music</a>
+                            <a href="https://www.youtube.com/watch?v=lHOiX0tZHrs&list=RDlHOiX0tZHrs&start_radio=1" class="platform-btn" target="_blank">YouTube</a>
+                            <a href="https://audiomack.com/yuhger6a6y/song/yuhgerlife" class="platform-btn" target="_blank">AudioMack</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Album 6: Best Lies -->
+                <article class="album-card">
+                    <div class="album-art-container">
+                        <img src="../images/best lifes.jpeg" alt="Best Lies Album Cover" class="album-art">
+                    </div>
+                    <div class="album-info">
+                        <h2 class="album-title">Best Lies</h2>
+                        <p class="album-date">Single • 2026</p>
+                        <p class="album-description">
+                            The latest release showcasing Yuhger6a6y's evolution in sound design and production. 
+                            A haunting blend of electronic beats and soulful vocals.
+                        </p>
+                        <div class="album-stats">
+                            <div class="stat">
+                                <span class="stat-number">1</span>
+                                <span class="stat-label">Track</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">3:24</span>
+                                <span class="stat-label">Duration</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">4.9</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                        <div class="tracklist">
+                            <h3>Tracklist</h3>
+                            <ol class="tracks">
+                                <li>Best Lies</li>
+                            </ol>
+                        </div>
+                        <div class="streaming-platforms">
+                            <a href="https://open.spotify.com/album/17TRA4qhHHngc4WhWxfxPR" class="platform-btn" target="_blank">Spotify</a>
+                            <a href="https://music.apple.com/us/album/best-lies-single/1877168255" class="platform-btn" target="_blank">Apple Music</a>
+                            <a href="https://www.youtube.com/watch?v=asorwscaUt0" class="platform-btn" target="_blank">YouTube</a>
+                            <a href="https://audiomack.com/yuhger6a6y/song/best-lies-1" class="platform-btn" target="_blank">AudioMack</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </main>
+
+        <script>
+            // Mobile menu toggle functionality
+            document.addEventListener('DOMContentLoaded', function() {
+                const menuToggle = document.getElementById('menuToggle');
+                const navMenu = document.getElementById('navMenu');
+                
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    // Toggle the icon between bars and close (X)
+                    const icon = menuToggle.querySelector('i');
+                    if (navMenu.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+                
+                // Close menu when clicking on a link
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navMenu.classList.remove('active');
+                        // Reset icon to bars
+                        const icon = menuToggle.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    });
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    const isClickInsideNav = menuToggle.contains(event.target) || navMenu.contains(event.target);
+                    
+                    if (!isClickInsideNav && navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                        // Reset icon to bars
+                        const icon = menuToggle.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            });
+        </script>
+    
+</body>
+</html>
