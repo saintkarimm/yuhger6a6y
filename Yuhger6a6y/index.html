@@ -9,6 +9,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles/main-styles.css">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YDP7BENSY6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YDP7BENSY6');
+        
+        // Custom event tracking functions
+        function trackEvent(category, action, label, value) {
+            gtag('event', action, {
+                'event_category': category,
+                'event_label': label,
+                'value': value
+            });
+        }
+        
+        // Track page view
+        document.addEventListener('DOMContentLoaded', function() {
+            trackEvent('page_view', 'landing_page_loaded', 'index.html', 1);
+        });
+    </script>
     <style>
         /* Hero Section */
         .hero {
@@ -295,13 +318,13 @@
             </button>
         </div>
         <div class="nav-menu" id="navMenu">
-            <a href="index.html" class="nav-link">Home</a>
-            <a href="music.html" class="nav-link">Music</a>
-            <a href="gallery.html" class="nav-link">Gallery</a>
-            <a href="about-photography/about-photography.html" class="nav-link">About</a>
-            <a href="player/advanced-player.html" class="nav-link">Player</a>
-            <a href="album-timeline/album-timeline.html" class="nav-link">Albums</a>
-            <a href="contact/contact.html" class="nav-link">Contact</a>
+            <a href="index.html" class="nav-link" onclick="trackEvent('navigation', 'click_nav', 'home', 1)">Home</a>
+            <a href="music.html" class="nav-link" onclick="trackEvent('navigation', 'click_nav', 'music', 1)">Music</a>
+            <a href="gallery.html" class="nav-link" onclick="trackEvent('navigation', 'click_nav', 'gallery', 1)">Gallery</a>
+            <a href="about-photography/about-photography.html" class="nav-link" onclick="trackEvent('navigation', 'click_nav', 'about', 1)">About</a>
+            <a href="player/advanced-player.html" class="nav-link" onclick="trackEvent('navigation', 'click_nav', 'player', 1)">Player</a>
+            <a href="album-timeline/album-timeline.html" class="nav-link" onclick="trackEvent('navigation', 'click_nav', 'albums', 1)">Albums</a>
+            <a href="contact/contact.html" class="nav-link" onclick="trackEvent('navigation', 'click_nav', 'contact', 1)">Contact</a>
         </div>
     </nav>
 
@@ -311,8 +334,8 @@
                 <h1>The Movement.</h1>
                 <p class="hero-subtext">Experience the convergence of sound, style, and substance. A new era of music begins now.</p>
                 <div class="hero-buttons">
-                    <a href="https://linktr.ee/yuhger6a6y" class="btn-primary" target="_blank">Listen Now</a>
-                    <a href="https://youtube.com/@yuhger6a6y" class="btn-secondary" target="_blank">Watch Video</a>
+                    <a href="https://linktr.ee/yuhger6a6y" class="btn-primary" target="_blank" onclick="trackEvent('engagement', 'click_listen_now', 'hero_button', 1)">Listen Now</a>
+                    <a href="https://youtube.com/@yuhger6a6y" class="btn-secondary" target="_blank" onclick="trackEvent('engagement', 'click_watch_video', 'hero_button', 1)">Watch Video</a>
                 </div>
             </div>
             <div class="hero-image">
@@ -323,7 +346,7 @@
 
     <section class="latest-release">
         <h2 class="section-title">Latest Release</h2>
-        <a href="https://fanlink.tv/bestlies" target="_blank" style="text-decoration: none; display: inline-block;">
+        <a href="https://fanlink.tv/bestlies" target="_blank" style="text-decoration: none; display: inline-block;" onclick="trackEvent('engagement', 'click_latest_release', 'best_lies_album', 1)">
         <div class="music-card">
             <div class="album-cover">
                 <img src="images/best lifes.jpeg" alt="Best Lies Album Cover" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px 20px 0 0;">
@@ -341,15 +364,15 @@
 
     <footer>
         <div class="social-links">
-            <a href="https://instagram.com/yuhger6a6y" class="social-link"><i class="fab fa-instagram"></i></a>
-            <a href="https://x.com/yuhger6a6y" class="social-link">
+            <a href="https://instagram.com/yuhger6a6y" class="social-link" onclick="trackEvent('social', 'click_social', 'instagram', 1)"><i class="fab fa-instagram"></i></a>
+            <a href="https://x.com/yuhger6a6y" class="social-link" onclick="trackEvent('social', 'click_social', 'twitter', 1)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50">
             <path d="M 6.9199219 6 L 21.136719 26.726562 L 6.2285156 44 L 9.40625 44 L 22.544922 28.777344 L 32.986328 44 L 43 44 L 28.123047 22.3125 L 42.203125 6 L 39.027344 6 L 26.716797 20.261719 L 16.933594 6 L 6.9199219 6 z" fill="currentColor"></path>
         </svg>
                             </a>
-            <a href="https://youtube.com/@yuhger6a6y" class="social-link"><i class="fab fa-youtube"></i></a>
-            <a href="https://open.spotify.com/artist/1NdphMq7y359rUPLRNsODE?si=236335fbea0d468d" class="social-link"><i class="fab fa-spotify"></i></a>
-            <a href="https://soundcloud.com/yuhger6a6y" class="social-link"><i class="fab fa-soundcloud"></i></a>
+            <a href="https://youtube.com/@yuhger6a6y" class="social-link" onclick="trackEvent('social', 'click_social', 'youtube', 1)"><i class="fab fa-youtube"></i></a>
+            <a href="https://open.spotify.com/artist/1NdphMq7y359rUPLRNsODE?si=236335fbea0d468d" class="social-link" onclick="trackEvent('social', 'click_social', 'spotify', 1)"><i class="fab fa-spotify"></i></a>
+            <a href="https://soundcloud.com/yuhger6a6y" class="social-link" onclick="trackEvent('social', 'click_social', 'soundcloud', 1)"><i class="fab fa-soundcloud"></i></a>
         </div>
         <p>&copy; 2026 Yuhger6a6y. All rights reserved.</p>
     </footer>

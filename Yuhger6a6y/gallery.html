@@ -9,6 +9,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles/main-styles.css">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YDP7BENSY6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YDP7BENSY6');
+        
+        // Custom event tracking functions
+        function trackEvent(category, action, label, value) {
+            gtag('event', action, {
+                'event_category': category,
+                'event_label': label,
+                'value': value
+            });
+        }
+        
+        // Track page view
+        document.addEventListener('DOMContentLoaded', function() {
+            trackEvent('page_view', 'gallery_page_loaded', 'gallery.html', 1);
+        });
+        
+        // Track image modal opens
+        function trackImageClick(imageSrc) {
+            const imageName = imageSrc.split('/').pop().split('.')[0];
+            trackEvent('engagement', 'open_image_modal', imageName, 1);
+        }
+    </script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -223,7 +252,7 @@
         <div class="gallery-grid">
             <!-- Photo Cards -->
             <div class="photo-card">
-                <img src="gallery/03b53bc8-d2a4-4e53-8b83-60c617040584.JPG" alt="Photo 1" class="photo-img" onclick="openModal(this.src)">
+                <img src="gallery/03b53bc8-d2a4-4e53-8b83-60c617040584.JPG" alt="Photo 1" class="photo-img" onclick="openModal(this.src); trackImageClick(this.src)">
                 <div class="photo-info">
                     <h3 class="photo-title">Creative Moment #1</h3>
                     <p class="photo-meta">Captured with passion</p>
@@ -377,6 +406,7 @@
         function openModal(src) {
             document.getElementById('imageModal').style.display = 'block';
             document.getElementById('modalImage').src = src;
+            trackImageClick(src);
         }
 
         function closeModal() {

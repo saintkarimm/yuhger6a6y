@@ -9,6 +9,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles/main-styles.css">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YDP7BENSY6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YDP7BENSY6');
+        
+        // Custom event tracking functions
+        function trackEvent(category, action, label, value) {
+            gtag('event', action, {
+                'event_category': category,
+                'event_label': label,
+                'value': value
+            });
+        }
+        
+        // Track page view
+        document.addEventListener('DOMContentLoaded', function() {
+            trackEvent('page_view', 'music_page_loaded', 'music.html', 1);
+        });
+        
+        // Track music interactions
+        function trackMusicPlay(trackName) {
+            trackEvent('engagement', 'play_music', trackName, 1);
+        }
+        
+        function trackMusicFavorite(trackName) {
+            trackEvent('engagement', 'favorite_track', trackName, 1);
+        }
+    </script>
     <style>
         /* Music-specific styles */
         .carousel-wrapper {
@@ -960,6 +992,9 @@
             });
 
             function handlePlayButtonClick(button, index) {
+                // Get track name for tracking
+                const trackName = button.closest('.music-card').querySelector('.track-title').textContent;
+                
                 // Reset all play buttons
                 document.querySelectorAll('.play-btn').forEach(b => {
                     b.innerHTML = '<i class="fas fa-play"></i>';
@@ -978,6 +1013,8 @@
                     button.innerHTML = '<i class="fas fa-pause"></i>';
                     button.classList.add('active');
                     button.closest('.music-card').classList.add('active');
+                    // Track music play
+                    trackMusicPlay(trackName);
                 }
             }
 
@@ -998,10 +1035,14 @@
 
             function handleFavoriteClick(button) {
                 const icon = button.querySelector('i');
+                const trackName = button.closest('.music-card').querySelector('.track-title').textContent;
+                
                 if (icon.classList.contains('far')) {
                     icon.classList.remove('far');
                     icon.classList.add('fas');
                     icon.classList.add('active');
+                    // Track favorite
+                    trackMusicFavorite(trackName);
                 } else {
                     icon.classList.remove('fas');
                     icon.classList.remove('active');
