@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YDP7BENSY6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-YDP7BENSY6');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yuhger6a6y - Latest Drop</title>
@@ -401,17 +410,17 @@
 <body>
     <!-- Navigation -->
     <nav class="nav">
-        <a href="index.html" class="logo">Yuhger6a6y</a>
+        <a href="index.html" class="logo" onclick="trackEvent('navigation', 'click_nav', 'home', 1)">Yuhger6a6y</a>
         <div class="nav-menu">
-            <a href="index.html" class="nav-link">Home</a>
-            <a href="music.html" class="nav-link">Music</a>
-            <a href="gallery.html" class="nav-link">Gallery</a>
-            <a href="about-photography/about-photography.html" class="nav-link">About</a>
-            <a href="player/advanced-player.html" class="nav-link">Player</a>
-            <a href="album-timeline/album-timeline.html" class="nav-link">Albums</a>
-            <a href="contact/contact.html" class="nav-link">Contact</a>
+            <a href="index.html" class="nav-link" onclick="trackEvent('navigation', 'click_nav', 'home', 1)">Home</a>
+            <a href="music.html" class="nav-link" onclick="trackEvent('navigation', 'click_nav', 'music', 1)">Music</a>
+            <a href="gallery.html" class="nav-link" onclick="trackEvent('navigation', 'click_nav', 'gallery', 1)">Gallery</a>
+            <a href="about-photography/about-photography.html" class="nav-link" onclick="trackEvent('navigation', 'click_nav', 'about', 1)">About</a>
+            <a href="player/advanced-player.html" class="nav-link" onclick="trackEvent('navigation', 'click_nav', 'player', 1)">Player</a>
+            <a href="album-timeline/album-timeline.html" class="nav-link" onclick="trackEvent('navigation', 'click_nav', 'albums', 1)">Albums</a>
+            <a href="contact/contact.html" class="nav-link" onclick="trackEvent('navigation', 'click_nav', 'contact', 1)">Contact</a>
         </div>
-        <a href="index.html" class="back-btn">Back to Home</a>
+        <a href="index.html" class="back-btn" onclick="trackEvent('navigation', 'click_back_home', 'latest_drop', 1)">Back to Home</a>
     </nav>
 
     <!-- Latest Drop Section -->
@@ -436,7 +445,7 @@
                     <div style="height: 22px;"></div>
                 </div>
             </div>
-            <button class="play-btn" id="playButton">
+            <button class="play-btn" id="playButton" onclick="trackEvent('engagement', 'play_latest_drop', 'best_lies_single', 1);">
                 <i class="fas fa-play"></i>
             </button>
         </div>
