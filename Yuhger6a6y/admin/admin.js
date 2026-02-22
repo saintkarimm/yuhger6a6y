@@ -16,18 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Load analytics data when clicking View Analytics
                 refreshAnalytics();
             } 
-            // Handle Manage Content button
-            else if (cardTitle.includes('Content Management')) {
-                openModal('contentModal');
-            }
-            // Handle Manage Users button
-            else if (cardTitle.includes('User Management')) {
-                openModal('userModal');
-            }
-            // Handle Configure Settings button
-            else if (cardTitle.includes('System Settings')) {
-                openModal('settingsModal');
-            }
             else {
                 showNotification(`Feature: ${cardTitle}`, 'info');
             }
@@ -48,86 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Add specific event listeners for modal-triggering buttons
-    const analyticsBtn = document.querySelector('.analytics-btn');
-    const contentMgmtBtn = document.querySelector('.content-mgmt-btn');
-    const userMgmtBtn = document.querySelector('.user-mgmt-btn');
-    const settingsBtn = document.querySelector('.settings-btn');
-    
-    if (analyticsBtn) {
-        analyticsBtn.addEventListener('click', function() {
-            refreshAnalytics();
-        });
-    }
-    
-    if (contentMgmtBtn) {
-        contentMgmtBtn.addEventListener('click', function() {
-            openModal('contentModal');
-        });
-    }
-    
-    if (userMgmtBtn) {
-        userMgmtBtn.addEventListener('click', function() {
-            openModal('userModal');
-        });
-    }
-    
-    if (settingsBtn) {
-        settingsBtn.addEventListener('click', function() {
-            openModal('settingsModal');
-        });
-    }
-    
-    // Modal functionality
-    const modals = document.querySelectorAll('.modal');
-    const closeButtons = document.querySelectorAll('.close');
-    
-    closeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const modal = this.closest('.modal');
-            closeModal(modal);
-        });
-    });
-    
-    // Close modal when clicking outside the content
-    modals.forEach(modal => {
-        modal.addEventListener('click', function(event) {
-            if (event.target === modal) {
-                closeModal(modal);
-            }
-        });
-    });
-    
-    // Tab functionality
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const tabName = this.getAttribute('data-tab');
-            const modal = this.closest('.modal');
-            
-            // Remove active class from all tabs and buttons
-            modal.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            modal.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Add active class to clicked button and corresponding content
-            this.classList.add('active');
-            modal.querySelector(`#${tabName}Tab`).classList.add('active');
-        });
-    });
-    
-    // Content Management functionality
-    setupContentManagement();
-    
-    // User Management functionality
-    setupUserManagement();
-    
-    // System Settings functionality
-    setupSystemSettings();
+
     
     // Add enhanced hover effects to cards
     const cards = document.querySelectorAll('.card, .stat-card');
@@ -166,48 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(element);
     });
     
-    // Add current time display with enhanced styling
-    function updateTime() {
-        const now = new Date();
-        const timeString = now.toLocaleString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            timeZoneName: 'short'
-        });
-        
-        // Create or update time display
-        let timeElement = document.getElementById('current-time');
-        if (!timeElement) {
-            timeElement = document.createElement('div');
-            timeElement.id = 'current-time';
-            timeElement.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(10px);
-                padding: 12px 20px;
-                border-radius: 50px;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-                font-size: 0.9rem;
-                color: #D4AF37;
-                z-index: 1000;
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                font-weight: 500;
-            `;
-            document.body.appendChild(timeElement);
-        }
-        timeElement.textContent = timeString;
-    }
-    
-    // Update time every second
-    updateTime();
-    setInterval(updateTime, 1000);
+
     
     // Add keyboard shortcuts
     document.addEventListener('keydown', function(e) {
@@ -808,678 +676,76 @@ Yuhger6a6y Admin Dashboard Help:
     createSubtleParticles();
 });
 
-// Modal functions
-function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.add('open');
-        // Add animation
-        setTimeout(() => {
-            modal.querySelector('.modal-content').style.transform = 'scale(1)';
-        }, 10);
-    }
-}
-
-function closeModal(modal) {
-    const modalContent = modal.querySelector('.modal-content');
-    modalContent.style.transform = 'scale(0.95)';
-    setTimeout(() => {
-        modal.classList.remove('open');
-    }, 300);
-}
-
-// Content Management Functions
-function setupContentManagement() {
-    // Gallery tab
-    const uploadImagesBtn = document.getElementById('uploadImagesBtn');
-    if (uploadImagesBtn) {
-        uploadImagesBtn.addEventListener('click', function() {
-            const fileInput = document.getElementById('imageUpload');
-            if (fileInput.files.length > 0) {
-                handleImageUpload(fileInput.files);
-            } else {
-                showNotification('Please select images to upload', 'error');
-            }
+// Remove any potential time/date display elements and intervals
+function removeTimeDisplayElements() {
+    // Remove elements by common time-related IDs
+    const timeElements = [
+        'current-time', 'time-display', 'datetime-display', 'clock-display', 
+        'current-date', 'time-element', 'date-time', 'live-clock', 'real-time'
+    ];
+    
+    timeElements.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.remove();
+            console.log(`Removed time element with ID: ${id}`);
+        }
+    });
+    
+    // Remove elements by class names
+    const timeClassSelectors = [
+        '.current-time', '.time-display', '.datetime-display', '.clock-display',
+        '.current-date', '.time-element', '.date-time', '.live-clock', '.real-time'
+    ];
+    
+    timeClassSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(el => {
+            el.remove();
+            console.log(`Removed time element with selector: ${selector}`);
         });
+    });
+    
+    // Clear any potential intervals (storing references in case they exist)
+    if (window.timeInterval) {
+        clearInterval(window.timeInterval);
+        window.timeInterval = null;
+        console.log('Cleared timeInterval');
     }
     
-    // Music tab
-    const uploadMusicBtn = document.getElementById('uploadMusicBtn');
-    if (uploadMusicBtn) {
-        uploadMusicBtn.addEventListener('click', function() {
-            const fileInput = document.getElementById('musicUpload');
-            if (fileInput.files.length > 0) {
-                handleMusicUpload(fileInput.files);
-            } else {
-                showNotification('Please select music files to upload', 'error');
-            }
-        });
-    }
+    // Clear any stored interval references
+    const allIntervals = Object.keys(window).filter(key => 
+        key.startsWith('interval') || key.includes('time') || key.includes('Time')
+    );
     
-    // Album tab
-    const createAlbumBtn = document.getElementById('createAlbumBtn');
-    if (createAlbumBtn) {
-        createAlbumBtn.addEventListener('click', function() {
-            createAlbum();
-        });
-    }
-    
-    // Load existing content
-    loadGalleryImages();
-    loadMusicTracks();
-    loadAlbums();
-}
-
-// User Management Functions
-function setupUserManagement() {
-    const addUserBtn = document.getElementById('addUserBtn');
-    if (addUserBtn) {
-        addUserBtn.addEventListener('click', function() {
-            addUser();
-        });
-    }
-    
-    // Load existing users
-    loadUsers();
-}
-
-// System Settings Functions
-function setupSystemSettings() {
-    const saveGeneralSettingsBtn = document.getElementById('saveGeneralSettingsBtn');
-    if (saveGeneralSettingsBtn) {
-        saveGeneralSettingsBtn.addEventListener('click', function() {
-            saveGeneralSettings();
-        });
-    }
-    
-    const saveAppearanceSettingsBtn = document.getElementById('saveAppearanceSettingsBtn');
-    if (saveAppearanceSettingsBtn) {
-        saveAppearanceSettingsBtn.addEventListener('click', function() {
-            saveAppearanceSettings();
-        });
-    }
-    
-    const saveIntegrationSettingsBtn = document.getElementById('saveIntegrationSettingsBtn');
-    if (saveIntegrationSettingsBtn) {
-        saveIntegrationSettingsBtn.addEventListener('click', function() {
-            saveIntegrationSettings();
-        });
-    }
-    
-    // Load existing settings
-    loadSettings();
-}
-
-// Content Management Implementation
-async function handleImageUpload(files) {
-    showNotification('Uploading images...', 'info');
-    
-    // In a real implementation, this would upload files to the server
-    // For now, we'll simulate the upload and refresh the gallery
-    try {
-        // This would be an actual upload to the server in a real implementation
-        // For now, just show success and reload
-        const formData = new FormData();
-        for (let i = 0; i < files.length; i++) {
-            formData.append('images', files[i]);
+    allIntervals.forEach(intervalKey => {
+        if (window[intervalKey] && typeof window[intervalKey] === 'number') {
+            clearInterval(window[intervalKey]);
+            console.log(`Cleared interval: ${intervalKey}`);
         }
-        
-        // Simulate upload to server
-        const response = await fetch('/api/upload-images', {
-            method: 'POST',
-            body: formData
-        });
-        
-        if (response.ok) {
-            const result = await response.json();
-            showNotification(`Successfully uploaded ${files.length} image(s)`, 'success');
-        } else {
-            showNotification('Failed to upload images', 'error');
-        }
-        
-        loadGalleryImages(); // Reload gallery after upload
-    } catch (error) {
-        showNotification('Error uploading images: ' + error.message, 'error');
-    }
-}
-
-async function handleMusicUpload(files) {
-    showNotification('Uploading music tracks...', 'info');
-    
-    try {
-        // This would be an actual upload to the server in a real implementation
-        const formData = new FormData();
-        for (let i = 0; i < files.length; i++) {
-            formData.append('tracks', files[i]);
-        }
-        
-        // Simulate upload to server
-        const response = await fetch('/api/upload-music', {
-            method: 'POST',
-            body: formData
-        });
-        
-        if (response.ok) {
-            const result = await response.json();
-            showNotification(`Successfully uploaded ${files.length} track(s)`, 'success');
-        } else {
-            showNotification('Failed to upload tracks', 'error');
-        }
-        
-        loadMusicTracks(); // Reload tracks after upload
-    } catch (error) {
-        showNotification('Error uploading tracks: ' + error.message, 'error');
-    }
-}
-
-async function createAlbum() {
-    const name = document.getElementById('albumName').value;
-    const artist = document.getElementById('albumArtist').value;
-    const description = document.getElementById('albumDescription').value;
-    const coverFile = document.getElementById('albumCover').files[0];
-    
-    if (!name || !artist) {
-        showNotification('Please fill in album name and artist', 'error');
-        return;
-    }
-    
-    showNotification('Creating album...', 'info');
-    
-    try {
-        // In a real implementation, this would create the album on the server
-        const albumData = {
-            name,
-            artist,
-            description,
-            cover: coverFile ? coverFile.name : null
-        };
-        
-        const response = await fetch('/api/create-album', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(albumData)
-        });
-        
-        if (response.ok) {
-            const result = await response.json();
-            showNotification(`Album "${name}" created successfully`, 'success');
-            document.getElementById('albumName').value = '';
-            document.getElementById('albumArtist').value = '';
-            document.getElementById('albumDescription').value = '';
-            document.getElementById('albumCover').value = '';
-            loadAlbums(); // Reload albums after creation
-        } else {
-            const error = await response.json();
-            showNotification(`Failed to create album: ${error.message}`, 'error');
-        }
-    } catch (error) {
-        showNotification('Error creating album: ' + error.message, 'error');
-    }
-}
-
-async function loadGalleryImages() {
-    const galleryContainer = document.getElementById('galleryImagesList');
-    if (!galleryContainer) return;
-    
-    try {
-        // Fetch gallery images from API
-        const response = await fetch('/api/content-management?operation=get-gallery');
-        
-        if (response.ok) {
-            const data = await response.json();
-            const images = data.images;
-            
-            // Clear existing content
-            galleryContainer.innerHTML = '';
-            
-            images.forEach(image => {
-                const imageItem = document.createElement('div');
-                imageItem.className = 'image-item';
-                imageItem.innerHTML = `
-                    <img src="${image.url}" alt="${image.name}">
-                    <div class="image-controls">
-                        <button onclick="deleteImage('${image.name}')"><i class="fas fa-trash"></i> Delete</button>
-                        <button onclick="editImage('${image.name}')"><i class="fas fa-edit"></i> Edit</button>
-                    </div>
-                `;
-                galleryContainer.appendChild(imageItem);
-            });
-        } else {
-            galleryContainer.innerHTML = '<p>Error loading gallery images</p>';
-        }
-    } catch (error) {
-        galleryContainer.innerHTML = '<p>Error loading gallery images: ' + error.message + '</p>';
-    }
-}
-
-async function loadMusicTracks() {
-    const tracksContainer = document.getElementById('musicTracksList');
-    if (!tracksContainer) return;
-    
-    try {
-        // Fetch music tracks from API
-        const response = await fetch('/api/content-management?operation=get-music');
-        
-        if (response.ok) {
-            const data = await response.json();
-            const tracks = data.tracks;
-            
-            // Clear existing content
-            tracksContainer.innerHTML = '';
-            
-            tracks.forEach(track => {
-                const trackItem = document.createElement('div');
-                trackItem.className = 'track-item';
-                trackItem.innerHTML = `
-                    <div class="track-info">
-                        <strong>${track.title}</strong>
-                        <br><small>File: ${track.filename}</small>
-                    </div>
-                    <div class="track-actions">
-                        <button onclick="playTrack('${track.filename}')"><i class="fas fa-play"></i> Play</button>
-                        <button onclick="deleteTrack('${track.filename}')"><i class="fas fa-trash"></i> Delete</button>
-                    </div>
-                `;
-                tracksContainer.appendChild(trackItem);
-            });
-        } else {
-            tracksContainer.innerHTML = '<p>Error loading music tracks</p>';
-        }
-    } catch (error) {
-        tracksContainer.innerHTML = '<p>Error loading music tracks: ' + error.message + '</p>';
-    }
-}
-
-async function loadAlbums() {
-    const albumsContainer = document.getElementById('albumsList');
-    if (!albumsContainer) return;
-    
-    try {
-        // Fetch albums from API
-        const response = await fetch('/api/content-management?operation=get-albums');
-        
-        if (response.ok) {
-            const data = await response.json();
-            const albums = data.albums;
-            
-            // Clear existing content
-            albumsContainer.innerHTML = '';
-            
-            albums.forEach(album => {
-                const albumItem = document.createElement('div');
-                albumItem.className = 'album-item';
-                albumItem.innerHTML = `
-                    <img src="${album.cover}" alt="${album.name}" class="album-cover">
-                    <h4>${album.name}</h4>
-                    <p>${album.artist}</p>
-                    <p>${album.year}</p>
-                    <div class="album-actions">
-                        <button onclick="editAlbum(${album.id})"><i class="fas fa-edit"></i> Edit</button>
-                        <button onclick="deleteAlbum(${album.id})"><i class="fas fa-trash"></i> Delete</button>
-                    </div>
-                `;
-                albumsContainer.appendChild(albumItem);
-            });
-        } else {
-            albumsContainer.innerHTML = '<p>Error loading albums</p>';
-        }
-    } catch (error) {
-        albumsContainer.innerHTML = '<p>Error loading albums: ' + error.message + '</p>';
-    }
-}
-
-// User Management Implementation
-async function addUser() {
-    const username = document.getElementById('newUsername').value;
-    const email = document.getElementById('newUserEmail').value;
-    const password = document.getElementById('newUserPassword').value;
-    const role = document.getElementById('userRole').value;
-    
-    if (!username || !email || !password) {
-        showNotification('Please fill in all required fields', 'error');
-        return;
-    }
-    
-    showNotification('Adding new user...', 'info');
-    
-    try {
-        // In a real implementation, this would add the user to the database
-        const userData = {
-            username,
-            email,
-            password,
-            role
-        };
-        
-        const response = await fetch('/api/add-user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userData)
-        });
-        
-        if (response.ok) {
-            const result = await response.json();
-            showNotification(`User "${username}" added successfully`, 'success');
-            document.getElementById('newUsername').value = '';
-            document.getElementById('newUserEmail').value = '';
-            document.getElementById('newUserPassword').value = '';
-            loadUsers(); // Reload users after addition
-        } else {
-            const error = await response.json();
-            showNotification(`Failed to add user: ${error.message}`, 'error');
-        }
-    } catch (error) {
-        showNotification('Error adding user: ' + error.message, 'error');
-    }
-}
-
-async function loadUsers() {
-    const usersContainer = document.getElementById('usersList');
-    if (!usersContainer) return;
-    
-    try {
-        // Fetch users from API
-        const response = await fetch('/api/content-management?operation=get-users');
-        
-        if (response.ok) {
-            const data = await response.json();
-            const users = data.users;
-            
-            // Clear existing content
-            usersContainer.innerHTML = '';
-            
-            users.forEach(user => {
-                const userRow = document.createElement('div');
-                userRow.className = 'user-row';
-                userRow.innerHTML = `
-                    <div class="user-info">
-                        <strong>${user.username}</strong><br>
-                        <small>${user.email}</small><br>
-                        <small>Role: ${user.role} | Last Login: ${user.lastLogin}</small>
-                    </div>
-                    <div class="user-actions">
-                        <button onclick="editUser(${user.id})"><i class="fas fa-edit"></i> Edit</button>
-                        <button onclick="deleteUser(${user.id})"><i class="fas fa-trash"></i> Delete</button>
-                    </div>
-                `;
-                usersContainer.appendChild(userRow);
-            });
-        } else {
-            usersContainer.innerHTML = '<p>Error loading users</p>';
-        }
-    } catch (error) {
-        usersContainer.innerHTML = '<p>Error loading users: ' + error.message + '</p>';
-    }
-}
-
-// System Settings Implementation
-async function loadSettings() {
-    try {
-        // Fetch settings from API
-        const response = await fetch('/api/content-management?operation=get-settings');
-        
-        if (response.ok) {
-            const settings = await response.json();
-            
-            // Load general settings
-            document.getElementById('siteTitle').value = settings.general.siteTitle;
-            document.getElementById('siteDescription').value = settings.general.siteDescription;
-            document.getElementById('siteUrl').value = settings.general.siteUrl;
-            
-            // Load appearance settings
-            document.getElementById('primaryColor').value = settings.appearance.primaryColor;
-            document.getElementById('secondaryColor').value = settings.appearance.secondaryColor;
-            document.getElementById('accentColor').value = settings.appearance.accentColor;
-            
-            // Load integration settings
-            document.getElementById('gaMeasurementId').value = settings.integrations.gaMeasurementId;
-            document.getElementById('gaPropertyId').value = settings.integrations.gaPropertyId;
-            document.getElementById('instagramUrl').value = settings.integrations.instagramUrl;
-            document.getElementById('spotifyUrl').value = settings.integrations.spotifyUrl;
-            document.getElementById('youtubeUrl').value = settings.integrations.youtubeUrl;
-            
-            // Load checkboxes
-            document.getElementById('enableAnimations').checked = settings.appearance.enableAnimations;
-            document.getElementById('enableParticles').checked = settings.appearance.enableParticles;
-        } else {
-            showNotification('Failed to load settings', 'error');
-        }
-    } catch (error) {
-        showNotification('Error loading settings: ' + error.message, 'error');
-    }
-}
-
-async function saveGeneralSettings() {
-    const siteTitle = document.getElementById('siteTitle').value;
-    const siteDescription = document.getElementById('siteDescription').value;
-    const siteUrl = document.getElementById('siteUrl').value;
-    
-    try {
-        const settingsData = {
-            type: 'general',
-            data: { siteTitle, siteDescription, siteUrl }
-        };
-        
-        const response = await fetch('/api/update-settings', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(settingsData)
-        });
-        
-        if (response.ok) {
-            showNotification('General settings saved successfully', 'success');
-        } else {
-            const error = await response.json();
-            showNotification(`Failed to save settings: ${error.message}`, 'error');
-        }
-    } catch (error) {
-        showNotification('Error saving settings: ' + error.message, 'error');
-    }
-}
-
-async function saveAppearanceSettings() {
-    const primaryColor = document.getElementById('primaryColor').value;
-    const secondaryColor = document.getElementById('secondaryColor').value;
-    const accentColor = document.getElementById('accentColor').value;
-    const enableAnimations = document.getElementById('enableAnimations').checked;
-    const enableParticles = document.getElementById('enableParticles').checked;
-    
-    try {
-        const settingsData = {
-            type: 'appearance',
-            data: { 
-                primaryColor, 
-                secondaryColor, 
-                accentColor, 
-                enableAnimations, 
-                enableParticles 
-            }
-        };
-        
-        const response = await fetch('/api/update-settings', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(settingsData)
-        });
-        
-        if (response.ok) {
-            showNotification('Appearance settings saved successfully', 'success');
-            
-            // Apply theme changes
-            applyThemeChanges(primaryColor);
-        } else {
-            const error = await response.json();
-            showNotification(`Failed to save settings: ${error.message}`, 'error');
-        }
-    } catch (error) {
-        showNotification('Error saving settings: ' + error.message, 'error');
-    }
-}
-
-async function saveIntegrationSettings() {
-    const gaMeasurementId = document.getElementById('gaMeasurementId').value;
-    const gaPropertyId = document.getElementById('gaPropertyId').value;
-    const instagramUrl = document.getElementById('instagramUrl').value;
-    const spotifyUrl = document.getElementById('spotifyUrl').value;
-    const youtubeUrl = document.getElementById('youtubeUrl').value;
-    
-    try {
-        const settingsData = {
-            type: 'integrations',
-            data: { 
-                gaMeasurementId,
-                gaPropertyId,
-                instagramUrl,
-                spotifyUrl,
-                youtubeUrl
-            }
-        };
-        
-        const response = await fetch('/api/update-settings', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(settingsData)
-        });
-        
-        if (response.ok) {
-            showNotification('Integration settings saved successfully', 'success');
-        } else {
-            const error = await response.json();
-            showNotification(`Failed to save settings: ${error.message}`, 'error');
-        }
-    } catch (error) {
-        showNotification('Error saving settings: ' + error.message, 'error');
-    }
-}
-
-function applyThemeChanges(primaryColor) {
-    // Apply color changes to the theme
-    const color = primaryColor || document.getElementById('primaryColor').value || '#D4AF37';
-    
-    // Update CSS variables
-    document.documentElement.style.setProperty('--accent-gold', color);
-    
-    // Show notification
-    showNotification('Theme changes applied successfully', 'success');
-}
-
-// Actual implementation for various actions
-async function deleteImage(filename) {
-    if (confirm(`Are you sure you want to delete the image "${filename}"?`)) {
-        try {
-            const response = await fetch(`/api/content-management?operation=delete-image&target=${encodeURIComponent(filename)}`, {
-                method: 'DELETE'
-            });
-            
-            if (response.ok) {
-                const result = await response.json();
-                showNotification(result.message, 'success');
-                loadGalleryImages(); // Reload gallery after deletion
-            } else {
-                const error = await response.json();
-                showNotification(`Failed to delete image: ${error.error}`, 'error');
-            }
-        } catch (error) {
-            showNotification(`Error deleting image: ${error.message}`, 'error');
-        }
-    }
-}
-
-function editImage(filename) {
-    showNotification(`Edit image functionality for: ${filename}`, 'info');
-    // In a real implementation, this would open an image editing interface
-}
-
-function playTrack(filename) {
-    // Create an audio element to play the track
-    const audio = new Audio(`/player/${filename}`);
-    audio.play().catch(e => {
-        showNotification(`Error playing track: ${e.message}`, 'error');
     });
 }
 
-async function deleteTrack(filename) {
-    if (confirm(`Are you sure you want to delete the track "${filename}"?`)) {
-        try {
-            const response = await fetch(`/api/content-management?operation=delete-track&target=${encodeURIComponent(filename)}`, {
-                method: 'DELETE'
-            });
-            
-            if (response.ok) {
-                const result = await response.json();
-                showNotification(result.message, 'success');
-                loadMusicTracks(); // Reload tracks after deletion
-            } else {
-                const error = await response.json();
-                showNotification(`Failed to delete track: ${error.error}`, 'error');
-            }
-        } catch (error) {
-            showNotification(`Error deleting track: ${error.message}`, 'error');
-        }
-    }
-}
+// Execute the cleanup function
+removeTimeDisplayElements();
 
-function editAlbum(id) {
-    showNotification(`Edit album functionality for album ID: ${id}`, 'info');
-    // In a real implementation, this would open an album editing interface
-}
+// Time and date function has been removed as per requirements
 
-async function deleteAlbum(id) {
-    if (confirm(`Are you sure you want to delete album ID: ${id}?`)) {
-        try {
-            const response = await fetch(`/api/content-management?operation=delete-album&target=${encodeURIComponent(id)}`, {
-                method: 'DELETE'
-            });
-            
-            if (response.ok) {
-                const result = await response.json();
-                showNotification(result.message, 'success');
-                loadAlbums(); // Reload albums after deletion
-            } else {
-                const error = await response.json();
-                showNotification(`Failed to delete album: ${error.error}`, 'error');
-            }
-        } catch (error) {
-            showNotification(`Error deleting album: ${error.message}`, 'error');
-        }
-    }
-}
+// Modal functions have been removed as per requirements
 
-function editUser(id) {
-    showNotification(`Edit user functionality for user ID: ${id}`, 'info');
-    // In a real implementation, this would open a user editing interface
-}
+// Content Management Functions have been removed as per requirements
 
-async function deleteUser(id) {
-    if (confirm(`Are you sure you want to delete user ID: ${id}?`)) {
-        try {
-            const response = await fetch(`/api/content-management?operation=delete-user&target=${encodeURIComponent(id)}`, {
-                method: 'DELETE'
-            });
-            
-            if (response.ok) {
-                const result = await response.json();
-                showNotification(result.message, 'success');
-                loadUsers(); // Reload users after deletion
-            } else {
-                const error = await response.json();
-                showNotification(`Failed to delete user: ${error.error}`, 'error');
-            }
-        } catch (error) {
-            showNotification(`Error deleting user: ${error.message}`, 'error');
-        }
-    }
-}
+// User Management Functions have been removed as per requirements
+
+// System Settings Functions have been removed as per requirements
+
+// Content Management Implementation has been removed as per requirements
+
+// User Management Implementation has been removed as per requirements
+
+// System Settings Implementation has been removed as per requirements
+
+// Actual implementation for various actions has been removed as per requirements
 
 function createSubtleParticles() {
     const particleContainer = document.createElement('div');
