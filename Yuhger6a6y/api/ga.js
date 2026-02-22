@@ -1,4 +1,5 @@
 // api/ga.js - Google Analytics API for Vercel
+import { GoogleAuth } from 'google-auth-library';
 import { google } from 'googleapis';
 
 export default async function handler(req, res) {
@@ -24,18 +25,18 @@ export default async function handler(req, res) {
     }
 
     // Use the full service account JSON approach (bulletproof method)
-    const serviceAccount = JSON.parse(process.env.GA_SERVICE_ACCOUNT_JSON);
+    const credentials = JSON.parse(process.env.GA_SERVICE_ACCOUNT_JSON);
     
-    const auth = new google.auth.JWT(
-      serviceAccount.client_email,
-      null,
-      serviceAccount.private_key,
-      ['https://www.googleapis.com/auth/analytics.readonly']
-    );
+    const auth = new GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/analytics.readonly'],
+    });
+
+    const client = await auth.getClient();
 
     const analyticsData = google.analyticsdata({ 
       version: 'v1beta', 
-      auth 
+      auth: client
     });
 
     // Get the GA4 Property ID from environment or request
