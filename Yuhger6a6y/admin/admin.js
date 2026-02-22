@@ -147,6 +147,11 @@ document.addEventListener('DOMContentLoaded', function() {
         showNotification('Refreshing analytics data...', 'info');
         
         try {
+            // Check if gaService is available
+            if (!window.gaService) {
+                throw new Error('Google Analytics service not loaded');
+            }
+            
             // Get data from secure analytics service
             const analyticsData = await window.gaService.fetchRealAnalyticsData(30);
             updateDashboardWithAnalytics(analyticsData);
@@ -158,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             console.error('Error refreshing analytics:', error);
-            showNotification('Failed to refresh analytics data', 'error');
+            showNotification('Failed to refresh analytics data: ' + error.message, 'error');
         }
     }
     
@@ -370,22 +375,29 @@ Yuhger6a6y Admin Dashboard Help:
     
     // Initialize analytics
     function initializeAnalytics() {
-        // Load secure analytics service
-        const script = document.createElement('script');
-        script.src = '/admin/secure-analytics.js';
-        script.onload = function() {
-            console.log('Secure Analytics service loaded');
-            // Load Chart.js for charts
-            loadChartJS();
-            
-            // Initial data load after everything is ready
-            setTimeout(() => {
-                if (window.gaService) {
-                    refreshAnalytics();
-                }
-            }, 2000);
-        };
-        document.head.appendChild(script);
+        // Secure analytics service is already loaded via HTML script tag
+        console.log('Checking for Secure Analytics service...');
+        
+        // Wait a bit for the service to initialize
+        setTimeout(() => {
+            if (window.gaService) {
+                console.log('GA Service is ready');
+                // Load Chart.js for charts
+                loadChartJS();
+                
+                // Initial data load after everything is ready
+                setTimeout(() => {
+                    if (window.gaService) {
+                        refreshAnalytics();
+                    }
+                }, 1000);
+            } else {
+                console.error('GA Service is not available');
+                // Still load Chart.js for basic functionality
+                loadChartJS();
+                showNotification('Analytics service not available', 'error');
+            }
+        }, 500);
     }
     
     // Load Chart.js
@@ -395,6 +407,10 @@ Yuhger6a6y Admin Dashboard Help:
         chartScript.onload = function() {
             console.log('Chart.js loaded');
             // Chart.js is loaded but we'll load data after both scripts are ready
+        };
+        chartScript.onerror = function() {
+            console.error('Failed to load Chart.js');
+            showNotification('Failed to load chart functionality', 'error');
         };
         document.head.appendChild(chartScript);
     }

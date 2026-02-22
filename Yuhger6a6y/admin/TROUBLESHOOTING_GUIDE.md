@@ -10,6 +10,18 @@ Modified the button handler in `admin.js` to differentiate between the "View Ana
 
 ---
 
+## Issue: "Cannot read properties of undefined (reading 'fetchRealAnalyticsData')" error
+
+### Root Cause
+The secure analytics service (`window.gaService`) was not properly initialized when the refreshAnalytics function tried to call it.
+
+### Solution Applied
+- Added the `secure-analytics.js` script directly to the HTML to ensure it loads before `admin.js`
+- Updated the initialization logic to properly wait for the service to be available
+- Added better error handling for when the service is not available
+
+---
+
 ## Issue: Real data not displaying, falling back to simulated data
 
 ### Potential Causes & Solutions

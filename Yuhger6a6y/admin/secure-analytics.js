@@ -262,15 +262,32 @@ class SecureGoogleAnalyticsService {
     }
 }
 
-// Initialize GA service when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    window.gaService = new SecureGoogleAnalyticsService();
-    
-    // Make it available globally
-    window.trackAdminEvent = (action, label = '', value = null) => {
-        window.gaService.trackEvent('admin_dashboard', action, label, value);
-    };
-});
+// Initialize GA service - try multiple approaches to ensure it's available
+function initializeGaService() {
+    try {
+        window.gaService = new SecureGoogleAnalyticsService();
+        
+        // Make it available globally
+        window.trackAdminEvent = (action, label = '', value = null) => {
+            if (window.gaService) {
+                window.gaService.trackEvent('admin_dashboard', action, label, value);
+            }
+        };
+        
+        console.log('GA Service initialized successfully');
+    } catch (error) {
+        console.error('Error initializing GA Service:', error);
+    }
+}
+
+// Try to initialize immediately if DOM is already loaded
+if (document.readyState === 'loading') {
+    // DOM is still loading
+    document.addEventListener('DOMContentLoaded', initializeGaService);
+} else {
+    // DOM is already loaded
+    initializeGaService();
+}
 
 // Export for use in other modules
 window.SecureGoogleAnalyticsService = SecureGoogleAnalyticsService;
