@@ -15,8 +15,21 @@ document.addEventListener('DOMContentLoaded', function() {
             if (cardTitle.includes('Website Analytics')) {
                 // Load analytics data when clicking View Analytics
                 refreshAnalytics();
-            } else {
-                showNotification(`Feature coming soon: ${cardTitle}`, 'info');
+            } 
+            // Handle Manage Content button
+            else if (cardTitle.includes('Content Management')) {
+                openModal('contentModal');
+            }
+            // Handle Manage Users button
+            else if (cardTitle.includes('User Management')) {
+                openModal('userModal');
+            }
+            // Handle Configure Settings button
+            else if (cardTitle.includes('System Settings')) {
+                openModal('settingsModal');
+            }
+            else {
+                showNotification(`Feature: ${cardTitle}`, 'info');
             }
             
             // Track button click
@@ -799,20 +812,19 @@ Yuhger6a6y Admin Dashboard Help:
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
-        modal.style.display = 'block';
+        modal.classList.add('open');
         // Add animation
         setTimeout(() => {
-            modal.style.opacity = '1';
             modal.querySelector('.modal-content').style.transform = 'scale(1)';
         }, 10);
     }
 }
 
 function closeModal(modal) {
-    modal.style.opacity = '0';
-    modal.querySelector('.modal-content').style.transform = 'scale(0.95)';
+    const modalContent = modal.querySelector('.modal-content');
+    modalContent.style.transform = 'scale(0.95)';
     setTimeout(() => {
-        modal.style.display = 'none';
+        modal.classList.remove('open');
     }, 300);
 }
 

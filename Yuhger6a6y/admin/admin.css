@@ -628,6 +628,13 @@ body {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(5px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.open {
+    display: block;
+    opacity: 1;
 }
 
 .modal-content {
@@ -640,6 +647,8 @@ body {
     margin: 5vh auto;
     position: relative;
     overflow-y: auto;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
 }
 
 .modal-header {
