@@ -54,7 +54,7 @@ export default async function handler(req, res) {
       // Ensure uploadedFiles is an array
       const fileArray = Array.isArray(uploadedFiles) ? uploadedFiles : [uploadedFiles];
       
-      // Move files to the gallery directory in the main project as well
+      // Copy files to the main gallery directory as well
       for (const file of fileArray) {
         const fileName = path.basename(file.filepath);
         const mainGalleryPath = path.join(process.cwd(), 'gallery', fileName);

@@ -36,17 +36,28 @@ export default async function handler(req, res) {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Define the path for the users data file
+    // Define paths for the users data files (both deployment and main directories)
     const usersFilePath = path.join(process.cwd(), 'deployment-package', 'users.json');
+    const mainUsersFilePath = path.join(process.cwd(), 'users.json');
 
-    // Read existing users
+    // Read existing users from deployment directory first
     let existingUsers = [];
     try {
       const usersContent = await fs.readFile(usersFilePath, 'utf8');
       existingUsers = JSON.parse(usersContent);
     } catch (error) {
-      // If users file doesn't exist, start with empty array
-      if (error.code !== 'ENOENT') {
+      // If users file doesn't exist in deployment dir, try main directory
+      if (error.code === 'ENOENT') {
+        try {
+          const mainUsersContent = await fs.readFile(mainUsersFilePath, 'utf8');
+          existingUsers = JSON.parse(mainUsersContent);
+        } catch (mainError) {
+          // If neither exists, start with empty array
+          if (mainError.code !== 'ENOENT') {
+            console.error('Error reading users file:', mainError);
+          }
+        }
+      } else {
         console.error('Error reading users file:', error);
       }
     }
@@ -71,8 +82,9 @@ export default async function handler(req, res) {
     // Add the new user to the array
     existingUsers.push(newUser);
 
-    // Write updated users back to file
+    // Write updated users to both files to keep them in sync
     await fs.writeFile(usersFilePath, JSON.stringify(existingUsers, null, 2));
+    await fs.writeFile(mainUsersFilePath, JSON.stringify(existingUsers, null, 2));
 
     // Return user info without password
     const { password: _, ...userWithoutPassword } = newUser;

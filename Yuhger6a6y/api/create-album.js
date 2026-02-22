@@ -27,17 +27,28 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Album name and artist are required' });
     }
 
-    // Define the path for the albums data file
+    // Define paths for the albums data files (both deployment and main directories)
     const albumsFilePath = path.join(process.cwd(), 'deployment-package', 'albums.json');
+    const mainAlbumsFilePath = path.join(process.cwd(), 'albums.json');
 
-    // Read existing albums
+    // Read existing albums from deployment directory first
     let existingAlbums = [];
     try {
       const albumsContent = await fs.readFile(albumsFilePath, 'utf8');
       existingAlbums = JSON.parse(albumsContent);
     } catch (error) {
-      // If albums file doesn't exist, start with empty array
-      if (error.code !== 'ENOENT') {
+      // If albums file doesn't exist in deployment dir, try main directory
+      if (error.code === 'ENOENT') {
+        try {
+          const mainAlbumsContent = await fs.readFile(mainAlbumsFilePath, 'utf8');
+          existingAlbums = JSON.parse(mainAlbumsContent);
+        } catch (mainError) {
+          // If neither exists, start with empty array
+          if (mainError.code !== 'ENOENT') {
+            console.error('Error reading albums file:', mainError);
+          }
+        }
+      } else {
         console.error('Error reading albums file:', error);
       }
     }
@@ -56,8 +67,9 @@ export default async function handler(req, res) {
     // Add the new album to the array
     existingAlbums.push(newAlbum);
 
-    // Write updated albums back to file
+    // Write updated albums to both files to keep them in sync
     await fs.writeFile(albumsFilePath, JSON.stringify(existingAlbums, null, 2));
+    await fs.writeFile(mainAlbumsFilePath, JSON.stringify(existingAlbums, null, 2));
 
     res.status(200).json({
       message: 'Album created successfully',

@@ -27,17 +27,28 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Type and data are required' });
     }
 
-    // Define the path for the settings file
+    // Define paths for the settings files (both deployment and main directories)
     const settingsFilePath = path.join(process.cwd(), 'deployment-package', 'settings.json');
+    const mainSettingsFilePath = path.join(process.cwd(), 'settings.json');
 
-    // Read existing settings
+    // Read existing settings from deployment directory first
     let existingSettings = {};
     try {
       const settingsContent = await fs.readFile(settingsFilePath, 'utf8');
       existingSettings = JSON.parse(settingsContent);
     } catch (error) {
-      // If settings file doesn't exist, start with empty object
-      if (error.code !== 'ENOENT') {
+      // If settings file doesn't exist in deployment dir, try main directory
+      if (error.code === 'ENOENT') {
+        try {
+          const mainSettingsContent = await fs.readFile(mainSettingsFilePath, 'utf8');
+          existingSettings = JSON.parse(mainSettingsContent);
+        } catch (mainError) {
+          // If neither exists, start with empty object
+          if (mainError.code !== 'ENOENT') {
+            console.error('Error reading settings file:', mainError);
+          }
+        }
+      } else {
         console.error('Error reading settings file:', error);
       }
     }
@@ -45,8 +56,9 @@ export default async function handler(req, res) {
     // Update the specific setting type
     existingSettings[type] = { ...existingSettings[type], ...data };
 
-    // Write updated settings back to file
+    // Write updated settings to both files to keep them in sync
     await fs.writeFile(settingsFilePath, JSON.stringify(existingSettings, null, 2));
+    await fs.writeFile(mainSettingsFilePath, JSON.stringify(existingSettings, null, 2));
 
     // For immediate effect, you might also want to update related configuration files
     // depending on the type of setting that was changed
