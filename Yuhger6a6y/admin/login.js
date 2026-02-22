@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Authentication function
     function authenticateUser(username, password, loginBtn) {
         // Check credentials (case-sensitive)
-        const validUsername = 'Yuhger6a6a@admin';
+        const validUsername = 'admin@yuhger6a6y';
         const validPassword = 'yuhger6a6y_admin';
         
         if (username === validUsername && password === validPassword) {

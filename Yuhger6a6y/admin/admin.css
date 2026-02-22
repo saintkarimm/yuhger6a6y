@@ -46,18 +46,30 @@ body {
     box-shadow: var(--shadow-soft);
 }
 
+/* Header with Logout Button Layout */
+.header > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
 .header h1 {
     font-size: 2.5rem;
     font-weight: 700;
     color: var(--text-light);
     margin-bottom: 15px;
     letter-spacing: -1px;
+    flex: 1;
+    text-align: left;
 }
 
 .header p {
     font-size: 1.2rem;
     color: var(--text-grey);
     font-weight: 500;
+    margin-bottom: 0;
 }
 
 /* Main Content */
@@ -284,10 +296,31 @@ body {
     
     .header {
         padding: 25px;
+        text-align: left;
+    }
+    
+    .header > div {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
     }
     
     .header h1 {
         font-size: 2rem;
+        text-align: left;
+        margin-bottom: 10px;
+    }
+    
+    .header p {
+        font-size: 1.1rem;
+    }
+    
+    /* Mobile logout button */
+    .btn.secondary {
+        align-self: flex-end;
+        margin-top: 10px;
+        padding: 12px 25px;
+        font-size: 14px;
     }
     
     .main-content {
@@ -312,9 +345,45 @@ body {
         padding: 14px 25px;
         font-size: 15px;
     }
+    
+    .welcome-banner {
+        padding: 20px;
+    }
+    
+    .welcome-banner h2 {
+        font-size: 1.5rem;
+    }
 }
 
 @media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .header {
+        padding: 20px;
+    }
+    
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .header p {
+        font-size: 1rem;
+    }
+    
+    .btn.secondary {
+        padding: 10px 20px;
+        font-size: 13px;
+        align-self: center;
+        width: 100%;
+        max-width: 200px;
+    }
+    
+    .main-content {
+        padding: 20px;
+    }
+    
     .stats-grid {
         grid-template-columns: 1fr;
     }
@@ -323,11 +392,28 @@ body {
         font-size: 2rem;
     }
     
-    .header h1 {
-        font-size: 1.8rem;
-    }
-    
     .stats-section h2 {
         font-size: 1.6rem;
+    }
+    
+    .card {
+        padding: 25px;
+    }
+    
+    .card h2 {
+        font-size: 1.3rem;
+    }
+    
+    .welcome-banner {
+        padding: 15px;
+    }
+    
+    .welcome-banner h2 {
+        font-size: 1.3rem;
+    }
+    
+    .footer {
+        padding: 20px;
+        font-size: 0.8rem;
     }
 }
