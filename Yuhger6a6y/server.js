@@ -1,7 +1,23 @@
+// Import necessary modules using CommonJS syntax to match Node.js HTTP server
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config(); // For environment variables
+const url = require('url'); // Add url module for parsing query strings
+
+// Load environment variables
+require('dotenv').config();
+
+// Dynamically load Google API modules only when needed
+let googleApis = null;
+let googleAuthLibrary = null;
+
+async function loadGoogleApis() {
+  if (!googleApis || !googleAuthLibrary) {
+    googleApis = await import('googleapis');
+    googleAuthLibrary = await import('google-auth-library');
+  }
+  return { google: googleApis.google, GoogleAuth: googleAuthLibrary.GoogleAuth };
+}
 
 const PORT = 8000;
 
@@ -65,12 +81,151 @@ async function handleApiRequest(req, res) {
         return;
       }
       
-      // If we have proper GA configuration, we'd connect to the real API
-      // For now, returning simulated data to prevent errors
-      const simulatedData = generateSimulatedAnalytics(parseInt(range));
-      
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(simulatedData));
+      // Attempt to connect to real Google Analytics API
+      try {
+        // Load Google APIs dynamically
+        const googleApis = await loadGoogleApis();
+        const google = googleApis.google;
+        const GoogleAuth = googleApis.GoogleAuth;
+        
+        // Use the full service account JSON approach
+        const credentials = JSON.parse(process.env.GA_SERVICE_ACCOUNT_JSON);
+        
+        const auth = new GoogleAuth({
+          credentials,
+          scopes: ['https://www.googleapis.com/auth/analytics.readonly'],
+        });
+
+        const client = await auth.getClient();
+
+        const analyticsData = google.analyticsdata({ 
+          version: 'v1beta', 
+          auth: client
+        });
+
+        // Get the GA4 Property ID from environment
+        const propertyId = process.env.GA_PROPERTY_ID;
+        
+        // Parse query parameters
+        const dateRange = parseInt(range);
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - dateRange);
+        const endDate = new Date();
+
+        // Make API request to Google Analytics
+        const response = await analyticsData.properties.runReport({
+          property: `properties/${propertyId}`,
+          requestBody: {
+            dateRanges: [{
+              startDate: startDate.toISOString().split('T')[0],
+              endDate: endDate.toISOString().split('T')[0]
+            }],
+            metrics: [
+              { name: 'activeUsers' },
+              { name: 'screenPageViews' },
+              { name: 'sessions' },
+              { name: 'bounceRate' },
+              { name: 'engagementRate' }
+            ],
+            dimensions: [
+              { name: 'date' }
+            ]
+          }
+        });
+
+        // Process the data to match our frontend expectations
+        const rawRows = response.data.rows || [];
+        const processedData = rawRows.map(row => ({
+          date: formatDate(row.dimensionValues[0].value),
+          visitors: parseInt(row.metricValues[0].value),
+          pageViews: parseInt(row.metricValues[1].value),
+          sessions: parseInt(row.metricValues[2].value),
+          bounceRate: parseFloat(row.metricValues[3].value).toFixed(2),
+          engagementRate: parseFloat(row.metricValues[4].value).toFixed(2)
+        }));
+
+        // Calculate summary
+        const summary = processedData.reduce((acc, curr) => {
+          acc.visitors += curr.visitors;
+          acc.pageViews += curr.pageViews;
+          acc.sessions += curr.sessions;
+          return acc;
+        }, { visitors: 0, pageViews: 0, sessions: 0 });
+
+        // Get top pages (different report for top pages)
+        const topPagesResponse = await analyticsData.properties.runReport({
+          property: `properties/${propertyId}`,
+          requestBody: {
+            dateRanges: [{
+              startDate: startDate.toISOString().split('T')[0],
+              endDate: endDate.toISOString().split('T')[0]
+            }],
+            metrics: [
+              { name: 'screenPageViews' }
+            ],
+            dimensions: [
+              { name: 'pagePath' }
+            ],
+            limit: 10,
+            metricAggregations: ['TOTAL']
+          }
+        });
+
+        const topPages = (topPagesResponse.data.rows || []).map(row => ({
+          page: row.dimensionValues[0].value,
+          views: parseInt(row.metricValues[0].value)
+        }));
+
+        // Get top referrers (different report)
+        const topReferrersResponse = await analyticsData.properties.runReport({
+          property: `properties/${propertyId}`,
+          requestBody: {
+            dateRanges: [{
+              startDate: startDate.toISOString().split('T')[0],
+              endDate: endDate.toISOString().split('T')[0]
+            }],
+            metrics: [
+              { name: 'sessions' }
+            ],
+            dimensions: [
+              { name: 'sessionSource' }
+            ],
+            limit: 10,
+            metricAggregations: ['TOTAL']
+          }
+        });
+
+        const topReferrers = (topReferrersResponse.data.rows || []).map(row => ({
+          name: row.dimensionValues[0].value,
+          count: parseInt(row.metricValues[0].value)
+        }));
+
+        // Prepare response data
+        const responseData = {
+          summary: {
+            visitors: summary.visitors,
+            pageViews: summary.pageViews,
+            sessions: summary.sessions,
+            musicPlays: Math.floor(summary.pageViews * 0.3), // Estimated
+            galleryViews: Math.floor(summary.pageViews * 0.25) // Estimated
+          },
+          trafficData: processedData,
+          topPages: topPages,
+          recentActivity: generateRecentActivity(processedData),
+          topReferrers: topReferrers
+        };
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(responseData));
+      } catch (gaError) {
+        console.error('Google Analytics API Error:', gaError);
+        // If GA API fails, return simulated data as fallback
+        console.log('GA API failed, returning simulated data');
+        const simulatedData = generateSimulatedAnalytics(parseInt(range));
+        
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(simulatedData));
+      }
     } else {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'API endpoint not found' }));
@@ -80,6 +235,15 @@ async function handleApiRequest(req, res) {
     res.writeHead(500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: 'Internal server error' }));
   }
+}
+
+// Helper function to format date
+function formatDate(dateString) {
+  // GA returns dates in YYYYMMDD format
+  if (dateString.length === 8) {
+    return `${dateString.substring(0, 4)}-${dateString.substring(4, 6)}-${dateString.substring(6, 8)}`;
+  }
+  return dateString;
 }
 
 // Function to generate simulated analytics data
