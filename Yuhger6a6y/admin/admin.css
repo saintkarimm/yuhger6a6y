@@ -288,18 +288,28 @@ body {
     opacity: 0.9;
 }
 
-/* Responsive Design */
+/* Responsive Design - Mobile First Approach */
 @media (max-width: 768px) {
+    /* Ensure dark theme is maintained */
     body {
+        background-color: var(--bg-dark) !important;
         padding: 15px;
+    }
+    
+    .container {
+        max-width: 100%;
     }
     
     .header {
         padding: 25px;
         text-align: left;
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
     }
     
     .header > div {
+        display: flex;
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
@@ -309,10 +319,13 @@ body {
         font-size: 2rem;
         text-align: left;
         margin-bottom: 10px;
+        color: var(--text-light);
     }
     
     .header p {
         font-size: 1.1rem;
+        color: var(--text-grey);
+        margin-bottom: 0;
     }
     
     /* Mobile logout button */
@@ -321,10 +334,16 @@ body {
         margin-top: 10px;
         padding: 12px 25px;
         font-size: 14px;
+        background: transparent;
+        color: var(--white-pill);
+        border: 1px solid var(--glass-border);
     }
     
     .main-content {
         padding: 25px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
     }
     
     .dashboard-grid {
@@ -339,6 +358,7 @@ body {
     
     .stat-number {
         font-size: 2.2rem;
+        color: var(--text-light);
     }
     
     .btn {
@@ -346,30 +366,78 @@ body {
         font-size: 15px;
     }
     
+    .card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        color: var(--text-light);
+    }
+    
+    .card h2 {
+        color: var(--text-light);
+    }
+    
+    .card p {
+        color: var(--text-grey);
+    }
+    
     .welcome-banner {
         padding: 20px;
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(244, 224, 77, 0.1));
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        color: var(--text-light);
     }
     
     .welcome-banner h2 {
         font-size: 1.5rem;
+        color: var(--accent-gold);
+    }
+    
+    .welcome-banner p {
+        color: var(--text-light);
+    }
+    
+    .stat-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        color: var(--text-light);
+    }
+    
+    .stat-card h3 {
+        color: var(--text-grey);
+    }
+    
+    .footer {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        color: var(--text-grey);
     }
 }
 
 @media (max-width: 480px) {
+    /* Ensure dark theme is maintained on small screens */
     body {
+        background-color: var(--bg-dark) !important;
         padding: 10px;
     }
     
     .header {
         padding: 20px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
     }
     
     .header h1 {
         font-size: 1.8rem;
+        color: var(--text-light);
     }
     
     .header p {
         font-size: 1rem;
+        color: var(--text-grey);
     }
     
     .btn.secondary {
@@ -378,10 +446,16 @@ body {
         align-self: center;
         width: 100%;
         max-width: 200px;
+        background: transparent;
+        color: var(--white-pill);
+        border: 1px solid var(--glass-border);
     }
     
     .main-content {
         padding: 20px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
     }
     
     .stats-grid {
@@ -390,30 +464,64 @@ body {
     
     .stat-number {
         font-size: 2rem;
+        color: var(--text-light);
     }
     
     .stats-section h2 {
         font-size: 1.6rem;
+        color: var(--text-light);
     }
     
     .card {
         padding: 25px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        color: var(--text-light);
     }
     
     .card h2 {
         font-size: 1.3rem;
+        color: var(--text-light);
+    }
+    
+    .card p {
+        color: var(--text-grey);
     }
     
     .welcome-banner {
         padding: 15px;
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(244, 224, 77, 0.1));
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        color: var(--text-light);
     }
     
     .welcome-banner h2 {
         font-size: 1.3rem;
+        color: var(--accent-gold);
+    }
+    
+    .welcome-banner p {
+        color: var(--text-light);
+    }
+    
+    .stat-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        color: var(--text-light);
+    }
+    
+    .stat-card h3 {
+        color: var(--text-grey);
     }
     
     .footer {
         padding: 20px;
         font-size: 0.8rem;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        color: var(--text-grey);
     }
 }
