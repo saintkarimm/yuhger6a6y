@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "googleapis": "^126.0.0",
-    "google-auth-library": "^9.0.0"
+    "google-auth-library": "^9.0.0",
+    "formidable": "^3.5.1",
+    "bcryptjs": "^2.4.3"
   },
   "keywords": [
     "google-analytics",
