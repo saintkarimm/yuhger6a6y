@@ -288,6 +288,97 @@ body {
     opacity: 0.9;
 }
 
+/* Charts Section */
+.charts-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.chart-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: var(--shadow-soft);
+}
+
+.chart-container h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Details Section */
+.details-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.detail-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: var(--shadow-soft);
+}
+
+.detail-card h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+
+.activity-list, .referrer-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.activity-item, .referrer-item {
+    padding: 15px;
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.activity-item:last-child, .referrer-item:last-child {
+    border-bottom: none;
+}
+
+.activity-text {
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+.activity-time {
+    color: var(--text-grey);
+    font-size: 0.85rem;
+}
+
+.referrer-name {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.referrer-count {
+    background: var(--accent-gold);
+    color: var(--pill-text);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
 /* Responsive Design - Mobile First Approach */
 @media (max-width: 768px) {
     /* Ensure dark theme is maintained */

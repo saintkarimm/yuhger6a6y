@@ -1,13 +1,28 @@
-// Admin Dashboard JavaScript - Yuhger6a6y Theme
+// Admin Dashboard JavaScript - Yuhger6a6y Theme with Secure Google Analytics
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Yuhger6a6y Admin Dashboard loaded successfully');
+    
+    // Initialize secure analytics
+    initializeAnalytics();
     
     // Add click handlers to buttons with enhanced feedback
     const buttons = document.querySelectorAll('.btn');
     buttons.forEach(button => {
         button.addEventListener('click', function() {
             const cardTitle = this.closest('.card').querySelector('h2').textContent;
-            showNotification(`Feature coming soon: ${cardTitle}`, 'info');
+            
+            // Handle View Analytics button differently
+            if (cardTitle.includes('Website Analytics')) {
+                // Load analytics data when clicking View Analytics
+                refreshAnalytics();
+            } else {
+                showNotification(`Feature coming soon: ${cardTitle}`, 'info');
+            }
+            
+            // Track button click
+            if (typeof trackAdminEvent === 'function') {
+                trackAdminEvent('button_click', cardTitle);
+            }
         });
         
         // Add hover effects
@@ -119,7 +134,166 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             showNotification('Dark mode is already active!', 'success');
         }
+        
+        // Press 'A' for analytics refresh
+        if (e.key === 'a' || e.key === 'A') {
+            e.preventDefault();
+            refreshAnalytics();
+        }
     });
+    
+    // Analytics functions
+    async function refreshAnalytics() {
+        showNotification('Refreshing analytics data...', 'info');
+        
+        try {
+            // Get data from secure analytics service
+            const analyticsData = await window.gaService.fetchRealAnalyticsData(30);
+            updateDashboardWithAnalytics(analyticsData);
+            showNotification('Analytics data refreshed successfully!', 'success');
+            
+            // Track refresh event
+            if (typeof trackAdminEvent === 'function') {
+                trackAdminEvent('analytics_refresh', '30_days');
+            }
+        } catch (error) {
+            console.error('Error refreshing analytics:', error);
+            showNotification('Failed to refresh analytics data', 'error');
+        }
+    }
+    
+    function updateDashboardWithAnalytics(data) {
+        // Update summary cards
+        if (data.summary) {
+            document.getElementById('totalVisitors').textContent = window.gaService.formatNumber(data.summary.visitors);
+            document.getElementById('pageViews').textContent = window.gaService.formatNumber(data.summary.pageViews);
+            document.getElementById('musicPlays').textContent = window.gaService.formatNumber(data.summary.musicPlays);
+            document.getElementById('galleryViews').textContent = window.gaService.formatNumber(data.summary.galleryViews);
+        }
+        
+        // Update recent activity
+        if (data.recentActivity) {
+            updateRecentActivity(data.recentActivity);
+        }
+        
+        // Update top referrers
+        if (data.topReferrers) {
+            updateTopReferrers(data.topReferrers);
+        }
+        
+        // Update charts if Chart.js is available
+        if (typeof Chart !== 'undefined' && data.trafficData) {
+            updateTrafficChart(data.trafficData);
+        }
+    }
+    
+    function updateRecentActivity(activities) {
+        const activityContainer = document.getElementById('recentActivity');
+        if (!activityContainer) return;
+        
+        if (activities.length === 0) {
+            activityContainer.innerHTML = '<p>No recent activity</p>';
+            return;
+        }
+        
+        activityContainer.innerHTML = activities.map(activity => `
+            <div class="activity-item">
+                <div class="activity-text">${activity.text}</div>
+                <div class="activity-time">${activity.time}</div>
+            </div>
+        `).join('');
+    }
+    
+    function updateTopReferrers(referrers) {
+        const referrerContainer = document.getElementById('topReferrers');
+        if (!referrerContainer) return;
+        
+        if (referrers.length === 0) {
+            referrerContainer.innerHTML = '<p>No referrer data</p>';
+            return;
+        }
+        
+        referrerContainer.innerHTML = referrers.map(referrer => `
+            <div class="referrer-item">
+                <div class="referrer-name">${referrer.name}</div>
+                <div class="referrer-count">${window.gaService.formatNumber(referrer.count)}</div>
+            </div>
+        `).join('');
+    }
+    
+    function updateTrafficChart(trafficData) {
+        const ctx = document.getElementById('trafficChart');
+        if (!ctx) return;
+        
+        // Destroy existing chart if it exists
+        if (window.trafficChartInstance) {
+            window.trafficChartInstance.destroy();
+        }
+        
+        // Prepare data
+        const dates = trafficData.map(item => item.date);
+        const visitors = trafficData.map(item => item.visitors);
+        const pageViews = trafficData.map(item => item.pageViews);
+        
+        window.trafficChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: 'Visitors',
+                        data: visitors,
+                        borderColor: '#D4AF37',
+                        backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Page Views',
+                        data: pageViews,
+                        borderColor: '#f4e04d',
+                        backgroundColor: 'rgba(244, 224, 77, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#888888'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#888888'
+                        }
+                    }
+                }
+            }
+        });
+    }
     
     function refreshStats() {
         const statNumbers = document.querySelectorAll('.stat-number');
@@ -135,17 +309,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300);
         });
         
-        // Show refresh notification
-        showNotification('Platform metrics refreshed successfully!', 'success');
+        // Refresh analytics data
+        refreshAnalytics();
     }
     
     function showHelp() {
         const helpText = `
 Yuhger6a6y Admin Dashboard Help:
 • Click on any feature card to see upcoming functionality
-• Press 'R' to refresh statistics
+• Press 'R' to refresh statistics and analytics
+• Press 'A' to refresh analytics data specifically
 • Press 'H' to show this help
 • Press 'D' to toggle dark mode (currently active)
+• All data is tracked through Google Analytics
 • Stats update automatically every second
 • All elements have smooth hover animations
         `;
@@ -162,6 +338,7 @@ Yuhger6a6y Admin Dashboard Help:
             transform: translateX(-50%);
             background: ${type === 'success' ? 'rgba(40, 167, 69, 0.9)' : 
                          type === 'info' ? 'rgba(23, 162, 184, 0.9)' : 
+                         type === 'error' ? 'rgba(220, 53, 69, 0.9)' : 
                          'rgba(220, 53, 69, 0.9)'};
             backdrop-filter: blur(10px);
             color: white;
@@ -191,6 +368,37 @@ Yuhger6a6y Admin Dashboard Help:
         }, 4000);
     }
     
+    // Initialize analytics
+    function initializeAnalytics() {
+        // Load secure analytics service
+        const script = document.createElement('script');
+        script.src = '/admin/secure-analytics.js';
+        script.onload = function() {
+            console.log('Secure Analytics service loaded');
+            // Load Chart.js for charts
+            loadChartJS();
+            
+            // Initial data load after everything is ready
+            setTimeout(() => {
+                if (window.gaService) {
+                    refreshAnalytics();
+                }
+            }, 2000);
+        };
+        document.head.appendChild(script);
+    }
+    
+    // Load Chart.js
+    function loadChartJS() {
+        const chartScript = document.createElement('script');
+        chartScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+        chartScript.onload = function() {
+            console.log('Chart.js loaded');
+            // Chart.js is loaded but we'll load data after both scripts are ready
+        };
+        document.head.appendChild(chartScript);
+    }
+    
     // Add subtle background animation
     document.body.style.background = `
         linear-gradient(135deg, #0B0B0D 0%, #1a1a2e 50%, #16213e 100%)
@@ -198,7 +406,7 @@ Yuhger6a6y Admin Dashboard Help:
     
     // Initialize with welcome message
     setTimeout(() => {
-        showNotification('Welcome to Yuhger6a6y Professional Admin Dashboard!', 'success');
+        showNotification('Welcome to Yuhger6a6y Professional Admin Dashboard with Secure Analytics!', 'success');
     }, 1500);
     
     // Add subtle particle effect background (optional enhancement)

@@ -10,6 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/admin/admin.css">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YDP7BENSY6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YDP7BENSY6');
+    </script>
 </head>
 <body>
     <!-- Authentication Check -->
@@ -72,19 +81,44 @@
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3>Today's Visitors</h3>
-                        <p class="stat-number">1,247</p>
+                        <p class="stat-number" id="totalVisitors">0</p>
                     </div>
                     <div class="stat-card">
                         <h3>Total Page Views</h3>
-                        <p class="stat-number">8,932</p>
+                        <p class="stat-number" id="pageViews">0</p>
                     </div>
                     <div class="stat-card">
                         <h3>Music Plays</h3>
-                        <p class="stat-number">3,456</p>
+                        <p class="stat-number" id="musicPlays">0</p>
                     </div>
                     <div class="stat-card">
                         <h3>Gallery Views</h3>
-                        <p class="stat-number">2,189</p>
+                        <p class="stat-number" id="galleryViews">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Analytics Charts Section -->
+            <div class="charts-section">
+                <div class="chart-container">
+                    <h2>Traffic Overview</h2>
+                    <canvas id="trafficChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Detailed Analytics -->
+            <div class="details-section">
+                <div class="detail-card">
+                    <h2>Recent Activity</h2>
+                    <div id="recentActivity" class="activity-list">
+                        <p>Loading recent activity...</p>
+                    </div>
+                </div>
+                
+                <div class="detail-card">
+                    <h2>Top Referrers</h2>
+                    <div id="topReferrers" class="referrer-list">
+                        <p>Loading referrer data...</p>
                     </div>
                 </div>
             </div>
