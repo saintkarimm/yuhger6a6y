@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Google Analytics API for Yuhger6a6y admin dashboard",
   "main": "ga.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
