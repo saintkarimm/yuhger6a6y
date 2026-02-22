@@ -1,0 +1,20 @@
+{
+  "name": "yuhger6a6y-analytics-api",
+  "version": "1.0.0",
+  "description": "Google Analytics API for Yuhger6a6y admin dashboard",
+  "main": "ga.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "googleapis": "^126.0.0"
+  },
+  "keywords": [
+    "google-analytics",
+    "api",
+    "vercel",
+    "serverless"
+  ],
+  "author": "Yuhger6a6y",
+  "license": "MIT"
+}
