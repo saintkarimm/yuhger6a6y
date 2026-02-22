@@ -24,10 +24,13 @@ export default async function handler(req, res) {
     }
 
     // Initialize Google Analytics Data API client
+    // Fix newline formatting in private key (common issue with environment variables)
+    const privateKeyFormatted = process.env.GA_PRIVATE_KEY.replace(/\\n/g, '\n');
+    
     const auth = new google.auth.JWT(
       process.env.GA_CLIENT_EMAIL,
       null,
-      process.env.GA_PRIVATE_KEY,
+      privateKeyFormatted,
       ['https://www.googleapis.com/auth/analytics.readonly']
     );
 
