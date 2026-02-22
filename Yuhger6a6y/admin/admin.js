@@ -35,6 +35,87 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Add specific event listeners for modal-triggering buttons
+    const analyticsBtn = document.querySelector('.analytics-btn');
+    const contentMgmtBtn = document.querySelector('.content-mgmt-btn');
+    const userMgmtBtn = document.querySelector('.user-mgmt-btn');
+    const settingsBtn = document.querySelector('.settings-btn');
+    
+    if (analyticsBtn) {
+        analyticsBtn.addEventListener('click', function() {
+            refreshAnalytics();
+        });
+    }
+    
+    if (contentMgmtBtn) {
+        contentMgmtBtn.addEventListener('click', function() {
+            openModal('contentModal');
+        });
+    }
+    
+    if (userMgmtBtn) {
+        userMgmtBtn.addEventListener('click', function() {
+            openModal('userModal');
+        });
+    }
+    
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', function() {
+            openModal('settingsModal');
+        });
+    }
+    
+    // Modal functionality
+    const modals = document.querySelectorAll('.modal');
+    const closeButtons = document.querySelectorAll('.close');
+    
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const modal = this.closest('.modal');
+            closeModal(modal);
+        });
+    });
+    
+    // Close modal when clicking outside the content
+    modals.forEach(modal => {
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeModal(modal);
+            }
+        });
+    });
+    
+    // Tab functionality
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const tabName = this.getAttribute('data-tab');
+            const modal = this.closest('.modal');
+            
+            // Remove active class from all tabs and buttons
+            modal.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            modal.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Add active class to clicked button and corresponding content
+            this.classList.add('active');
+            modal.querySelector(`#${tabName}Tab`).classList.add('active');
+        });
+    });
+    
+    // Content Management functionality
+    setupContentManagement();
+    
+    // User Management functionality
+    setupUserManagement();
+    
+    // System Settings functionality
+    setupSystemSettings();
+    
     // Add enhanced hover effects to cards
     const cards = document.querySelectorAll('.card, .stat-card');
     cards.forEach(card => {
@@ -210,6 +291,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update charts if Chart.js is available
         if (typeof Chart !== 'undefined' && data.trafficData) {
             updateTrafficChart(data.trafficData);
+            updateEngagementChart(data);
+            updateDeviceChart(data);
+            updateGeoChart(data);
+        }
+        
+        // Update top pages chart if available
+        if (typeof Chart !== 'undefined' && data.topPages) {
+            updateTopPagesChart(data.topPages);
         }
     }
     
@@ -285,6 +374,262 @@ document.addEventListener('DOMContentLoaded', function() {
                         fill: true
                     }
                 ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#888888'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#888888'
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    function updateEngagementChart(data) {
+        const ctx = document.getElementById('engagementChart');
+        if (!ctx) return;
+        
+        // Destroy existing chart if it exists
+        if (window.engagementChartInstance) {
+            window.engagementChartInstance.destroy();
+        }
+        
+        // Prepare engagement data
+        const engagementData = data.trafficData || [];
+        const dates = engagementData.map(item => item.date);
+        const bounceRates = engagementData.map(item => parseFloat(item.bounceRate));
+        const engagementRates = engagementData.map(item => parseFloat(item.engagementRate) || 0);
+        
+        window.engagementChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: 'Bounce Rate (%)',
+                        data: bounceRates,
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Engagement Rate (%)',
+                        data: engagementRates,
+                        borderColor: '#2ecc71',
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#888888'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#888888'
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    function updateTopPagesChart(topPages) {
+        const ctx = document.getElementById('topPagesChart');
+        if (!ctx) return;
+        
+        // Destroy existing chart if it exists
+        if (window.topPagesChartInstance) {
+            window.topPagesChartInstance.destroy();
+        }
+        
+        // Prepare top pages data
+        const pageLabels = topPages.map(page => page.page.substring(0, 20) + (page.page.length > 20 ? '...' : ''));
+        const pageViews = topPages.map(page => page.views);
+        
+        window.topPagesChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: pageLabels,
+                datasets: [{
+                    label: 'Page Views',
+                    data: pageViews,
+                    backgroundColor: 'rgba(212, 175, 55, 0.7)',
+                    borderColor: '#D4AF37',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#888888',
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#888888'
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    function updateDeviceChart(data) {
+        const ctx = document.getElementById('deviceChart');
+        if (!ctx) return;
+        
+        // Destroy existing chart if it exists
+        if (window.deviceChartInstance) {
+            window.deviceChartInstance.destroy();
+        }
+        
+        // Prepare device data (simulated since GA API doesn't provide this directly in the same way)
+        const deviceTypes = ['Desktop', 'Mobile', 'Tablet'];
+        const deviceCounts = [
+            Math.floor(data.summary.visitors * 0.6),
+            Math.floor(data.summary.visitors * 0.35),
+            Math.floor(data.summary.visitors * 0.05)
+        ];
+        
+        window.deviceChartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: deviceTypes,
+                datasets: [{
+                    data: deviceCounts,
+                    backgroundColor: [
+                        'rgba(212, 175, 55, 0.7)',
+                        'rgba(244, 224, 77, 0.7)',
+                        'rgba(255, 255, 255, 0.7)'
+                    ],
+                    borderColor: [
+                        '#D4AF37',
+                        '#f4e04d',
+                        '#ffffff'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ffffff',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    function updateGeoChart(data) {
+        const ctx = document.getElementById('geoChart');
+        if (!ctx) return;
+        
+        // Destroy existing chart if it exists
+        if (window.geoChartInstance) {
+            window.geoChartInstance.destroy();
+        }
+        
+        // Prepare geographic data (simulated)
+        const countries = ['United States', 'Canada', 'UK', 'Germany', 'Australia'];
+        const countryVisits = [
+            Math.floor(data.summary.visitors * 0.4),
+            Math.floor(data.summary.visitors * 0.15),
+            Math.floor(data.summary.visitors * 0.15),
+            Math.floor(data.summary.visitors * 0.1),
+            Math.floor(data.summary.visitors * 0.1)
+        ];
+        
+        window.geoChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: countries,
+                datasets: [{
+                    label: 'Visitors',
+                    data: countryVisits,
+                    backgroundColor: 'rgba(244, 224, 77, 0.7)',
+                    borderColor: '#f4e04d',
+                    borderWidth: 1
+                }]
             },
             options: {
                 responsive: true,
@@ -449,6 +794,436 @@ Yuhger6a6y Admin Dashboard Help:
     // Add subtle particle effect background (optional enhancement)
     createSubtleParticles();
 });
+
+// Modal functions
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'block';
+        // Add animation
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            modal.querySelector('.modal-content').style.transform = 'scale(1)';
+        }, 10);
+    }
+}
+
+function closeModal(modal) {
+    modal.style.opacity = '0';
+    modal.querySelector('.modal-content').style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 300);
+}
+
+// Content Management Functions
+function setupContentManagement() {
+    // Gallery tab
+    const uploadImagesBtn = document.getElementById('uploadImagesBtn');
+    if (uploadImagesBtn) {
+        uploadImagesBtn.addEventListener('click', function() {
+            const fileInput = document.getElementById('imageUpload');
+            if (fileInput.files.length > 0) {
+                handleImageUpload(fileInput.files);
+            } else {
+                showNotification('Please select images to upload', 'error');
+            }
+        });
+    }
+    
+    // Music tab
+    const uploadMusicBtn = document.getElementById('uploadMusicBtn');
+    if (uploadMusicBtn) {
+        uploadMusicBtn.addEventListener('click', function() {
+            const fileInput = document.getElementById('musicUpload');
+            if (fileInput.files.length > 0) {
+                handleMusicUpload(fileInput.files);
+            } else {
+                showNotification('Please select music files to upload', 'error');
+            }
+        });
+    }
+    
+    // Album tab
+    const createAlbumBtn = document.getElementById('createAlbumBtn');
+    if (createAlbumBtn) {
+        createAlbumBtn.addEventListener('click', function() {
+            createAlbum();
+        });
+    }
+    
+    // Load existing content
+    loadGalleryImages();
+    loadMusicTracks();
+    loadAlbums();
+}
+
+// User Management Functions
+function setupUserManagement() {
+    const addUserBtn = document.getElementById('addUserBtn');
+    if (addUserBtn) {
+        addUserBtn.addEventListener('click', function() {
+            addUser();
+        });
+    }
+    
+    // Load existing users
+    loadUsers();
+}
+
+// System Settings Functions
+function setupSystemSettings() {
+    const saveGeneralSettingsBtn = document.getElementById('saveGeneralSettingsBtn');
+    if (saveGeneralSettingsBtn) {
+        saveGeneralSettingsBtn.addEventListener('click', function() {
+            saveGeneralSettings();
+        });
+    }
+    
+    const saveAppearanceSettingsBtn = document.getElementById('saveAppearanceSettingsBtn');
+    if (saveAppearanceSettingsBtn) {
+        saveAppearanceSettingsBtn.addEventListener('click', function() {
+            saveAppearanceSettings();
+        });
+    }
+    
+    const saveIntegrationSettingsBtn = document.getElementById('saveIntegrationSettingsBtn');
+    if (saveIntegrationSettingsBtn) {
+        saveIntegrationSettingsBtn.addEventListener('click', function() {
+            saveIntegrationSettings();
+        });
+    }
+    
+    // Load existing settings
+    loadSettings();
+}
+
+// Content Management Implementation
+function handleImageUpload(files) {
+    showNotification('Uploading images...', 'info');
+    
+    // Simulate upload process
+    setTimeout(() => {
+        const fileNames = Array.from(files).map(file => file.name).join(', ');
+        showNotification(`Successfully uploaded images: ${fileNames}`, 'success');
+        loadGalleryImages(); // Reload gallery after upload
+    }, 1500);
+}
+
+function handleMusicUpload(files) {
+    showNotification('Uploading music tracks...', 'info');
+    
+    // Simulate upload process
+    setTimeout(() => {
+        const fileNames = Array.from(files).map(file => file.name).join(', ');
+        showNotification(`Successfully uploaded tracks: ${fileNames}`, 'success');
+        loadMusicTracks(); // Reload tracks after upload
+    }, 1500);
+}
+
+function createAlbum() {
+    const name = document.getElementById('albumName').value;
+    const artist = document.getElementById('albumArtist').value;
+    const description = document.getElementById('albumDescription').value;
+    const coverFile = document.getElementById('albumCover').files[0];
+    
+    if (!name || !artist) {
+        showNotification('Please fill in album name and artist', 'error');
+        return;
+    }
+    
+    showNotification('Creating album...', 'info');
+    
+    // Simulate creation process
+    setTimeout(() => {
+        showNotification(`Album "${name}" created successfully`, 'success');
+        document.getElementById('albumName').value = '';
+        document.getElementById('albumArtist').value = '';
+        document.getElementById('albumDescription').value = '';
+        document.getElementById('albumCover').value = '';
+        loadAlbums(); // Reload albums after creation
+    }, 1500);
+}
+
+function loadGalleryImages() {
+    // Simulate loading gallery images
+    const galleryContainer = document.getElementById('galleryImagesList');
+    if (!galleryContainer) return;
+    
+    // Clear existing content
+    galleryContainer.innerHTML = '';
+    
+    // Sample gallery items (in a real implementation, this would come from an API)
+    const sampleImages = [
+        { id: 1, name: 'image1.jpg', url: '/images/artistic.JPG' },
+        { id: 2, name: 'image2.jpg', url: '/images/breakthrough.JPG' },
+        { id: 3, name: 'image3.jpg', url: '/images/origin.JPG' },
+        { id: 4, name: 'image4.jpg', url: '/images/logo.png' }
+    ];
+    
+    sampleImages.forEach(image => {
+        const imageItem = document.createElement('div');
+        imageItem.className = 'image-item';
+        imageItem.innerHTML = `
+            <img src="${image.url}" alt="${image.name}">
+            <div class="image-controls">
+                <button onclick="deleteImage(${image.id})"><i class="fas fa-trash"></i> Delete</button>
+                <button onclick="editImage(${image.id})"><i class="fas fa-edit"></i> Edit</button>
+            </div>
+        `;
+        galleryContainer.appendChild(imageItem);
+    });
+}
+
+function loadMusicTracks() {
+    // Simulate loading music tracks
+    const tracksContainer = document.getElementById('musicTracksList');
+    if (!tracksContainer) return;
+    
+    // Clear existing content
+    tracksContainer.innerHTML = '';
+    
+    // Sample music tracks (in a real implementation, this would come from an API)
+    const sampleTracks = [
+        { id: 1, title: 'Best Lies', artist: 'Yuhger6a6y', duration: '3:45' },
+        { id: 2, title: 'Go 6a6y', artist: 'Yuhger6a6y', duration: '4:20' },
+        { id: 3, title: 'Jetti N\' Dracula', artist: 'Yuhger6a6y', duration: '3:15' }
+    ];
+    
+    sampleTracks.forEach(track => {
+        const trackItem = document.createElement('div');
+        trackItem.className = 'track-item';
+        trackItem.innerHTML = `
+            <div class="track-info">
+                <strong>${track.title}</strong> by ${track.artist}
+                <br><small>Duration: ${track.duration}</small>
+            </div>
+            <div class="track-actions">
+                <button onclick="playTrack(${track.id})"><i class="fas fa-play"></i> Play</button>
+                <button onclick="deleteTrack(${track.id})"><i class="fas fa-trash"></i> Delete</button>
+            </div>
+        `;
+        tracksContainer.appendChild(trackItem);
+    });
+}
+
+function loadAlbums() {
+    // Simulate loading albums
+    const albumsContainer = document.getElementById('albumsList');
+    if (!albumsContainer) return;
+    
+    // Clear existing content
+    albumsContainer.innerHTML = '';
+    
+    // Sample albums (in a real implementation, this would come from an API)
+    const sampleAlbums = [
+        { id: 1, name: 'YugerLife', artist: 'Yuhger6a6y', year: '2026' },
+        { id: 2, name: 'World on drugs', artist: 'Yuhger6a6y', year: '2025' },
+        { id: 3, name: 'Breakthrough', artist: 'Yuhger6a6y', year: '2024' }
+    ];
+    
+    sampleAlbums.forEach(album => {
+        const albumItem = document.createElement('div');
+        albumItem.className = 'album-item';
+        albumItem.innerHTML = `
+            <img src="/images/album-3girls.jpeg" alt="${album.name}" class="album-cover">
+            <h4>${album.name}</h4>
+            <p>${album.artist}</p>
+            <p>${album.year}</p>
+            <div class="album-actions">
+                <button onclick="editAlbum(${album.id})"><i class="fas fa-edit"></i> Edit</button>
+                <button onclick="deleteAlbum(${album.id})"><i class="fas fa-trash"></i> Delete</button>
+            </div>
+        `;
+        albumsContainer.appendChild(albumItem);
+    });
+}
+
+// User Management Implementation
+function addUser() {
+    const username = document.getElementById('newUsername').value;
+    const email = document.getElementById('newUserEmail').value;
+    const password = document.getElementById('newUserPassword').value;
+    const role = document.getElementById('userRole').value;
+    
+    if (!username || !email || !password) {
+        showNotification('Please fill in all required fields', 'error');
+        return;
+    }
+    
+    showNotification('Adding new user...', 'info');
+    
+    // Simulate user creation process
+    setTimeout(() => {
+        showNotification(`User "${username}" added successfully`, 'success');
+        document.getElementById('newUsername').value = '';
+        document.getElementById('newUserEmail').value = '';
+        document.getElementById('newUserPassword').value = '';
+        loadUsers(); // Reload users after addition
+    }, 1500);
+}
+
+function loadUsers() {
+    // Simulate loading users
+    const usersContainer = document.getElementById('usersList');
+    if (!usersContainer) return;
+    
+    // Clear existing content
+    usersContainer.innerHTML = '';
+    
+    // Sample users (in a real implementation, this would come from an API)
+    const sampleUsers = [
+        { id: 1, username: 'admin@yuhger6a6y', email: 'admin@yuhger6a6y.com', role: 'admin', lastLogin: '2026-02-22' },
+        { id: 2, username: 'editor1', email: 'editor@yuhger6a6y.com', role: 'editor', lastLogin: '2026-02-21' },
+        { id: 3, username: 'viewer1', email: 'viewer@yuhger6a6y.com', role: 'viewer', lastLogin: '2026-02-20' }
+    ];
+    
+    sampleUsers.forEach(user => {
+        const userRow = document.createElement('div');
+        userRow.className = 'user-row';
+        userRow.innerHTML = `
+            <div class="user-info">
+                <strong>${user.username}</strong><br>
+                <small>${user.email}</small><br>
+                <small>Role: ${user.role} | Last Login: ${user.lastLogin}</small>
+            </div>
+            <div class="user-actions">
+                <button onclick="editUser(${user.id})"><i class="fas fa-edit"></i> Edit</button>
+                <button onclick="deleteUser(${user.id})"><i class="fas fa-trash"></i> Delete</button>
+            </div>
+        `;
+        usersContainer.appendChild(userRow);
+    });
+}
+
+// System Settings Implementation
+function loadSettings() {
+    // Load general settings
+    document.getElementById('siteTitle').value = localStorage.getItem('siteTitle') || 'Yuhger6a6y Creative Platform';
+    document.getElementById('siteDescription').value = localStorage.getItem('siteDescription') || 'A creative platform for music and photography';
+    document.getElementById('siteUrl').value = localStorage.getItem('siteUrl') || 'https://yuhger6a6y.vercel.app';
+    
+    // Load appearance settings
+    document.getElementById('primaryColor').value = localStorage.getItem('primaryColor') || '#D4AF37';
+    document.getElementById('secondaryColor').value = localStorage.getItem('secondaryColor') || '#0B0B0D';
+    document.getElementById('accentColor').value = localStorage.getItem('accentColor') || '#f4e04d';
+    
+    // Load integration settings
+    document.getElementById('gaMeasurementId').value = localStorage.getItem('gaMeasurementId') || 'G-YDP7BENSY6';
+    document.getElementById('gaPropertyId').value = localStorage.getItem('gaPropertyId') || '';
+    document.getElementById('instagramUrl').value = localStorage.getItem('instagramUrl') || 'https://instagram.com/yuhger6a6y';
+    document.getElementById('spotifyUrl').value = localStorage.getItem('spotifyUrl') || 'https://open.spotify.com/artist/yuhger6a6y';
+    document.getElementById('youtubeUrl').value = localStorage.getItem('youtubeUrl') || 'https://youtube.com/@yuhger6a6y';
+    
+    // Load checkboxes
+    document.getElementById('enableAnimations').checked = localStorage.getItem('enableAnimations') !== 'false';
+    document.getElementById('enableParticles').checked = localStorage.getItem('enableParticles') !== 'false';
+}
+
+function saveGeneralSettings() {
+    const siteTitle = document.getElementById('siteTitle').value;
+    const siteDescription = document.getElementById('siteDescription').value;
+    const siteUrl = document.getElementById('siteUrl').value;
+    
+    localStorage.setItem('siteTitle', siteTitle);
+    localStorage.setItem('siteDescription', siteDescription);
+    localStorage.setItem('siteUrl', siteUrl);
+    
+    showNotification('General settings saved successfully', 'success');
+}
+
+function saveAppearanceSettings() {
+    const primaryColor = document.getElementById('primaryColor').value;
+    const secondaryColor = document.getElementById('secondaryColor').value;
+    const accentColor = document.getElementById('accentColor').value;
+    const enableAnimations = document.getElementById('enableAnimations').checked;
+    const enableParticles = document.getElementById('enableParticles').checked;
+    
+    localStorage.setItem('primaryColor', primaryColor);
+    localStorage.setItem('secondaryColor', secondaryColor);
+    localStorage.setItem('accentColor', accentColor);
+    localStorage.setItem('enableAnimations', enableAnimations);
+    localStorage.setItem('enableParticles', enableParticles);
+    
+    showNotification('Appearance settings saved successfully', 'success');
+    
+    // Apply theme changes
+    applyThemeChanges();
+}
+
+function saveIntegrationSettings() {
+    const gaMeasurementId = document.getElementById('gaMeasurementId').value;
+    const gaPropertyId = document.getElementById('gaPropertyId').value;
+    const instagramUrl = document.getElementById('instagramUrl').value;
+    const spotifyUrl = document.getElementById('spotifyUrl').value;
+    const youtubeUrl = document.getElementById('youtubeUrl').value;
+    
+    localStorage.setItem('gaMeasurementId', gaMeasurementId);
+    localStorage.setItem('gaPropertyId', gaPropertyId);
+    localStorage.setItem('instagramUrl', instagramUrl);
+    localStorage.setItem('spotifyUrl', spotifyUrl);
+    localStorage.setItem('youtubeUrl', youtubeUrl);
+    
+    showNotification('Integration settings saved successfully', 'success');
+}
+
+function applyThemeChanges() {
+    // Apply color changes to the theme
+    const primaryColor = localStorage.getItem('primaryColor') || '#D4AF37';
+    const secondaryColor = localStorage.getItem('secondaryColor') || '#0B0B0D';
+    const accentColor = localStorage.getItem('accentColor') || '#f4e04d';
+    
+    // Update CSS variables
+    document.documentElement.style.setProperty('--accent-gold', primaryColor);
+    
+    // Show notification
+    showNotification('Theme changes applied successfully', 'success');
+}
+
+// Placeholder functions for various actions
+function deleteImage(id) {
+    if (confirm('Are you sure you want to delete this image?')) {
+        showNotification('Image deleted successfully', 'success');
+        loadGalleryImages(); // Reload gallery after deletion
+    }
+}
+
+function editImage(id) {
+    showNotification('Edit image functionality coming soon', 'info');
+}
+
+function playTrack(id) {
+    showNotification(`Playing track ID: ${id}`, 'info');
+}
+
+function deleteTrack(id) {
+    if (confirm('Are you sure you want to delete this track?')) {
+        showNotification('Track deleted successfully', 'success');
+        loadMusicTracks(); // Reload tracks after deletion
+    }
+}
+
+function editAlbum(id) {
+    showNotification('Edit album functionality coming soon', 'info');
+}
+
+function deleteAlbum(id) {
+    if (confirm('Are you sure you want to delete this album?')) {
+        showNotification('Album deleted successfully', 'success');
+        loadAlbums(); // Reload albums after deletion
+    }
+}
+
+function editUser(id) {
+    showNotification('Edit user functionality coming soon', 'info');
+}
+
+function deleteUser(id) {
+    if (confirm('Are you sure you want to delete this user?')) {
+        showNotification('User deleted successfully', 'success');
+        loadUsers(); // Reload users after deletion
+    }
+}
 
 function createSubtleParticles() {
     const particleContainer = document.createElement('div');

@@ -54,25 +54,249 @@
                 <div class="card">
                     <h2><i class="fas fa-chart-line"></i> Website Analytics</h2>
                     <p>Monitor visitor statistics, engagement metrics, and performance insights with detailed analytics</p>
-                    <button class="btn primary">View Analytics</button>
+                    <button class="btn primary analytics-btn">View Analytics</button>
                 </div>
                 
                 <div class="card">
                     <h2><i class="fas fa-photo-film"></i> Content Management</h2>
                     <p>Manage gallery images, music tracks, albums, and multimedia content seamlessly</p>
-                    <button class="btn primary">Manage Content</button>
+                    <button class="btn primary content-mgmt-btn">Manage Content</button>
                 </div>
                 
                 <div class="card">
                     <h2><i class="fas fa-users-cog"></i> User Management</h2>
                     <p>Administer accounts, permissions, and access control for team members</p>
-                    <button class="btn primary">Manage Users</button>
+                    <button class="btn primary user-mgmt-btn">Manage Users</button>
                 </div>
                 
                 <div class="card">
                     <h2><i class="fas fa-cog"></i> System Settings</h2>
                     <p>Configure website preferences, themes, and system parameters</p>
-                    <button class="btn primary">Configure Settings</button>
+                    <button class="btn primary settings-btn">Configure Settings</button>
+                </div>
+            </div>
+            
+            <!-- Modals -->
+            <!-- Content Management Modal -->
+            <div id="contentModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2><i class="fas fa-photo-film"></i> Content Management</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="tabs">
+                            <button class="tab-btn active" data-tab="gallery">Gallery</button>
+                            <button class="tab-btn" data-tab="music">Music</button>
+                            <button class="tab-btn" data-tab="albums">Albums</button>
+                        </div>
+                        
+                        <div id="galleryTab" class="tab-content active">
+                            <div class="upload-section">
+                                <h3>Upload New Images</h3>
+                                <input type="file" id="imageUpload" accept="image/*" multiple>
+                                <button id="uploadImagesBtn" class="btn primary">Upload Images</button>
+                            </div>
+                            
+                            <div class="gallery-management">
+                                <h3>Current Gallery Images</h3>
+                                <div id="galleryImagesList" class="images-grid">
+                                    <!-- Gallery images will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="musicTab" class="tab-content">
+                            <div class="upload-section">
+                                <h3>Upload New Tracks</h3>
+                                <input type="file" id="musicUpload" accept="audio/*" multiple>
+                                <button id="uploadMusicBtn" class="btn primary">Upload Music</button>
+                            </div>
+                            
+                            <div class="music-management">
+                                <h3>Current Music Tracks</h3>
+                                <div id="musicTracksList" class="tracks-list">
+                                    <!-- Music tracks will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="albumsTab" class="tab-content">
+                            <h3>Album Management</h3>
+                            <div class="album-form">
+                                <input type="text" id="albumName" placeholder="Album Name">
+                                <input type="text" id="albumArtist" placeholder="Artist Name">
+                                <textarea id="albumDescription" placeholder="Album Description"></textarea>
+                                <input type="file" id="albumCover" accept="image/*">
+                                <button id="createAlbumBtn" class="btn primary">Create Album</button>
+                            </div>
+                            
+                            <div class="albums-list">
+                                <h3>Current Albums</h3>
+                                <div id="albumsList" class="albums-grid">
+                                    <!-- Albums will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User Management Modal -->
+            <div id="userModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2><i class="fas fa-users-cog"></i> User Management</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="tabs">
+                            <button class="tab-btn active" data-tab="users">Users</button>
+                            <button class="tab-btn" data-tab="permissions">Permissions</button>
+                        </div>
+                        
+                        <div id="usersTab" class="tab-content active">
+                            <div class="user-form">
+                                <h3>Add New User</h3>
+                                <input type="text" id="newUsername" placeholder="Username">
+                                <input type="email" id="newUserEmail" placeholder="Email">
+                                <input type="password" id="newUserPassword" placeholder="Password">
+                                <select id="userRole">
+                                    <option value="admin">Admin</option>
+                                    <option value="editor">Editor</option>
+                                    <option value="viewer">Viewer</option>
+                                </select>
+                                <button id="addUserBtn" class="btn primary">Add User</button>
+                            </div>
+                            
+                            <div class="users-list">
+                                <h3>Current Users</h3>
+                                <div id="usersList" class="users-table">
+                                    <!-- Users will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="permissionsTab" class="tab-content">
+                            <h3>User Permissions</h3>
+                            <div class="permissions-list">
+                                <!-- Permissions will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- System Settings Modal -->
+            <div id="settingsModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2><i class="fas fa-cog"></i> System Settings</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="tabs">
+                            <button class="tab-btn active" data-tab="general">General</button>
+                            <button class="tab-btn" data-tab="appearance">Appearance</button>
+                            <button class="tab-btn" data-tab="integrations">Integrations</button>
+                        </div>
+                        
+                        <div id="generalTab" class="tab-content active">
+                            <div class="setting-group">
+                                <h3>Site Information</h3>
+                                <div class="form-field">
+                                    <label for="siteTitle">Site Title</label>
+                                    <input type="text" id="siteTitle" value="Yuhger6a6y Creative Platform">
+                                </div>
+                                <div class="form-field">
+                                    <label for="siteDescription">Site Description</label>
+                                    <textarea id="siteDescription">A creative platform for music and photography</textarea>
+                                </div>
+                                <div class="form-field">
+                                    <label for="siteUrl">Site URL</label>
+                                    <input type="text" id="siteUrl" value="https://yuhger6a6y.vercel.app">
+                                </div>
+                            </div>
+                            
+                            <div class="setting-group">
+                                <h3>SEO Settings</h3>
+                                <div class="form-field">
+                                    <label for="metaKeywords">Meta Keywords</label>
+                                    <input type="text" id="metaKeywords" value="music, photography, creative, art">
+                                </div>
+                                <div class="form-field">
+                                    <label for="metaAuthor">Meta Author</label>
+                                    <input type="text" id="metaAuthor" value="Yuhger6a6y">
+                                </div>
+                            </div>
+                            
+                            <button id="saveGeneralSettingsBtn" class="btn primary">Save General Settings</button>
+                        </div>
+                        
+                        <div id="appearanceTab" class="tab-content">
+                            <div class="setting-group">
+                                <h3>Theme Settings</h3>
+                                <div class="form-field">
+                                    <label for="primaryColor">Primary Color</label>
+                                    <input type="color" id="primaryColor" value="#D4AF37">
+                                </div>
+                                <div class="form-field">
+                                    <label for="secondaryColor">Secondary Color</label>
+                                    <input type="color" id="secondaryColor" value="#0B0B0D">
+                                </div>
+                                <div class="form-field">
+                                    <label for="accentColor">Accent Color</label>
+                                    <input type="color" id="accentColor" value="#f4e04d">
+                                </div>
+                            </div>
+                            
+                            <div class="setting-group">
+                                <h3>Layout Options</h3>
+                                <div class="checkbox-field">
+                                    <input type="checkbox" id="enableAnimations" checked>
+                                    <label for="enableAnimations">Enable Animations</label>
+                                </div>
+                                <div class="checkbox-field">
+                                    <input type="checkbox" id="enableParticles" checked>
+                                    <label for="enableParticles">Enable Particle Effects</label>
+                                </div>
+                            </div>
+                            
+                            <button id="saveAppearanceSettingsBtn" class="btn primary">Save Appearance Settings</button>
+                        </div>
+                        
+                        <div id="integrationsTab" class="tab-content">
+                            <div class="setting-group">
+                                <h3>Google Analytics</h3>
+                                <div class="form-field">
+                                    <label for="gaMeasurementId">Measurement ID</label>
+                                    <input type="text" id="gaMeasurementId" value="G-YDP7BENSY6">
+                                </div>
+                                <div class="form-field">
+                                    <label for="gaPropertyId">Property ID</label>
+                                    <input type="text" id="gaPropertyId" value="">
+                                </div>
+                            </div>
+                            
+                            <div class="setting-group">
+                                <h3>Social Media</h3>
+                                <div class="form-field">
+                                    <label for="instagramUrl">Instagram URL</label>
+                                    <input type="text" id="instagramUrl" value="https://instagram.com/yuhger6a6y">
+                                </div>
+                                <div class="form-field">
+                                    <label for="spotifyUrl">Spotify URL</label>
+                                    <input type="text" id="spotifyUrl" value="https://open.spotify.com/artist/yuhger6a6y">
+                                </div>
+                                <div class="form-field">
+                                    <label for="youtubeUrl">YouTube URL</label>
+                                    <input type="text" id="youtubeUrl" value="https://youtube.com/@yuhger6a6y">
+                                </div>
+                            </div>
+                            
+                            <button id="saveIntegrationSettingsBtn" class="btn primary">Save Integration Settings</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -120,6 +344,31 @@
                     <div id="topReferrers" class="referrer-list">
                         <p>Loading referrer data...</p>
                     </div>
+                </div>
+            </div>
+            
+            <!-- Enhanced Analytics Sections -->
+            <div class="charts-section">
+                <div class="chart-container">
+                    <h2>Engagement Overview</h2>
+                    <canvas id="engagementChart"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <h2>Top Pages</h2>
+                    <canvas id="topPagesChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="charts-section">
+                <div class="chart-container">
+                    <h2>Device Categories</h2>
+                    <canvas id="deviceChart"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <h2>Geographic Distribution</h2>
+                    <canvas id="geoChart"></canvas>
                 </div>
             </div>
         </main>
