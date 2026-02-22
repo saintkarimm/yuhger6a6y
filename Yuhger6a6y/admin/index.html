@@ -11,14 +11,31 @@
     <link rel="stylesheet" href="/admin/admin.css">
 </head>
 <body>
+    <!-- Authentication Check -->
+    <div id="auth-check" style="display: none;">
+        <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0B0B0D; display: flex; align-items: center; justify-content: center; z-index: 9999;">
+            <div style="text-align: center; color: white;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: #D4AF37; margin-bottom: 20px;"></i>
+                <p>Verifying authentication...</p>
+            </div>
+        </div>
+    </div>
+    
     <div class="container">
         <header class="header">
-            <h1>Yuhger6a6y Admin</h1>
-            <p>Professional Dashboard for Website Management</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>Yuhger6a6y Admin</h1>
+                    <p>Professional Dashboard for Website Management</p>
+                </div>
+                <button id="logoutBtn" class="btn secondary" style="padding: 10px 20px; font-size: 14px;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
         </header>
         
         <div class="welcome-banner">
-            <h2>Welcome Back, Admin</h2>
+            <h2>Welcome Back, <span id="adminUsername">Admin</span></h2>
             <p>Manage your creative platform with ease and efficiency</p>
         </div>
         
@@ -79,5 +96,62 @@
     </div>
     
     <script src="/admin/admin.js"></script>
+    <script>
+        // Authentication check
+        document.addEventListener('DOMContentLoaded', function() {
+            const authCheck = document.getElementById('auth-check');
+            authCheck.style.display = 'block';
+            
+            // Check if user is authenticated
+            const isAuthenticated = localStorage.getItem('admin_authenticated');
+            const sessionData = localStorage.getItem('admin_session');
+            
+            if (isAuthenticated !== 'true' || !sessionData) {
+                // Redirect to login
+                window.location.href = '/admin/login.html';
+                return;
+            }
+            
+            // Check session validity
+            try {
+                const session = JSON.parse(sessionData);
+                const loginTime = new Date(session.loginTime);
+                const now = new Date();
+                const hoursPassed = (now - loginTime) / (1000 * 60 * 60);
+                
+                if (hoursPassed >= 24) {
+                    // Session expired
+                    localStorage.removeItem('admin_authenticated');
+                    localStorage.removeItem('admin_session');
+                    window.location.href = '/admin/login.html';
+                    return;
+                }
+                
+                // Show username
+                document.getElementById('adminUsername').textContent = session.username || 'Admin';
+                
+            } catch (e) {
+                // Invalid session
+                localStorage.removeItem('admin_authenticated');
+                localStorage.removeItem('admin_session');
+                window.location.href = '/admin/login.html';
+                return;
+            }
+            
+            // Hide auth check
+            setTimeout(() => {
+                authCheck.style.display = 'none';
+            }, 1000);
+            
+            // Add logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    localStorage.removeItem('admin_authenticated');
+                    localStorage.removeItem('admin_session');
+                    window.location.href = '/admin/login.html';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
