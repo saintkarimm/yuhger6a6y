@@ -17,22 +17,38 @@ export default async function handler(req, res) {
 
   try {
     // Verify environment variables are set
-    if (!process.env.GA_PRIVATE_KEY || !process.env.GA_CLIENT_EMAIL) {
-      return res.status(500).json({ 
-        error: 'Google Analytics environment variables not configured' 
-      });
+    // Prefer the full JSON approach for better reliability
+    if (!process.env.GA_SERVICE_ACCOUNT_JSON) {
+      // Fallback to individual variables if JSON not provided
+      if (!process.env.GA_PRIVATE_KEY || !process.env.GA_CLIENT_EMAIL) {
+        return res.status(500).json({ 
+          error: 'Google Analytics environment variables not configured. Please set either GA_SERVICE_ACCOUNT_JSON or GA_PRIVATE_KEY and GA_CLIENT_EMAIL.' 
+        });
+      }
     }
 
-    // Initialize Google Analytics Data API client
-    // Fix newline formatting in private key (common issue with environment variables)
-    const privateKeyFormatted = process.env.GA_PRIVATE_KEY.replace(/\\n/g, '\n');
-    
-    const auth = new google.auth.JWT(
-      process.env.GA_CLIENT_EMAIL,
-      null,
-      privateKeyFormatted,
-      ['https://www.googleapis.com/auth/analytics.readonly']
-    );
+    let auth;
+    if (process.env.GA_SERVICE_ACCOUNT_JSON) {
+      // Use the full service account JSON approach (most reliable)
+      const serviceAccount = JSON.parse(process.env.GA_SERVICE_ACCOUNT_JSON);
+      
+      auth = new google.auth.JWT(
+        serviceAccount.client_email,
+        null,
+        serviceAccount.private_key,
+        ['https://www.googleapis.com/auth/analytics.readonly']
+      );
+    } else {
+      // Fallback to individual variables with newline fix
+      const privateKeyFormatted = process.env.GA_PRIVATE_KEY.replace(/\\n/g, '\n');
+      
+      auth = new google.auth.JWT(
+        process.env.GA_CLIENT_EMAIL,
+        null,
+        privateKeyFormatted,
+        ['https://www.googleapis.com/auth/analytics.readonly']
+      );
+    }
 
     const analyticsData = google.analyticsdata({ 
       version: 'v1beta', 
