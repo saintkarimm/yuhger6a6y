@@ -218,7 +218,18 @@ function updatePagesChart(topPages) {
     }
     
     // Prepare data for chart
-    const pages = topPages.map(item => item.page.replace('/deployment-package', '').replace('.html', ''));
+    const pages = topPages.map(item => {
+        let pageName = item.page;
+        // Remove common prefixes that shouldn't appear in the dashboard
+        pageName = pageName.replace('/deployment-package', '');
+        pageName = pageName.replace('/yuhger6a6y', '');
+        pageName = pageName.replace('.html', '');
+        // If it's the root, show as 'Home'
+        if (pageName === '' || pageName === '/') {
+            pageName = 'Home';
+        }
+        return pageName;
+    });
     const views = topPages.map(item => item.views);
     
     pagesChart = new Chart(ctx, {
