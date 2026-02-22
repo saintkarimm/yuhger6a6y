@@ -22,6 +22,18 @@ The secure analytics service (`window.gaService`) was not properly initialized w
 
 ---
 
+## Issue: "Google Analytics service not loaded" error
+
+### Root Cause
+The secure analytics service is loading but the `process.env` variables are not available in the browser environment, causing initialization issues.
+
+### Solution Applied
+- Updated the secure analytics service to handle browser environment properly
+- Removed reliance on `process.env` in client-side code
+- The service now assumes server-side authentication and focuses on API communication
+
+---
+
 ## Issue: Real data not displaying, falling back to simulated data
 
 ### Potential Causes & Solutions

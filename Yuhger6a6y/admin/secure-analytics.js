@@ -1,30 +1,35 @@
 // Secure Google Analytics 4 Integration for Admin Dashboard
 class SecureGoogleAnalyticsService {
     constructor() {
-        this.measurementId = 'G-YDP7BENSY6'; // Your GA4 Measurement ID
-        this.propertyId = null; // Will be set after authentication
-        
-        // Get credentials from environment (these would be set in Vercel)
-        this.privateKey = process.env.GA_PRIVATE_KEY || null;
-        this.clientEmail = process.env.GA_CLIENT_EMAIL || null;
-        this.projectId = process.env.GA_PROJECT_ID || null;
-        
-        this.accessToken = null;
-        this.authenticated = false;
-        
-        this.init();
+        try {
+            this.measurementId = 'G-YDP7BENSY6'; // Your GA4 Measurement ID
+            this.propertyId = null; // This will be used if needed, but server handles auth
+            
+            // Note: Actual credentials are handled server-side in the API
+            // The client just makes requests to the secure API endpoint
+            this.privateKey = null; // Not used client-side
+            this.clientEmail = null; // Not used client-side
+            this.projectId = null; // Not used client-side
+            
+            this.accessToken = null; // Not used client-side
+            this.authenticated = true; // We assume the API will handle authentication
+            
+            this.init();
+        } catch (error) {
+            console.error('Error in SecureGoogleAnalyticsService constructor:', error);
+        }
     }
 
     init() {
-        // Initialize Google Analytics for frontend tracking
-        this.loadGAScript();
-        this.setupEventListeners();
-        
-        // Attempt authentication if credentials are available
-        if (this.privateKey && this.clientEmail) {
+        try {
+            // Initialize Google Analytics for frontend tracking
+            this.loadGAScript();
+            this.setupEventListeners();
+            
+            // Authenticate (credentials handled server-side)
             this.authenticate();
-        } else {
-            console.warn('GA4 credentials not found in environment. Using simulated data.');
+        } catch (error) {
+            console.error('Error in SecureGoogleAnalyticsService init:', error);
         }
     }
 
@@ -78,11 +83,9 @@ class SecureGoogleAnalyticsService {
     async authenticate() {
         try {
             // In a Vercel deployment, authentication happens server-side via environment variables
-            // We just need to verify that our environment variables are available
-            if (this.privateKey && this.clientEmail && this.projectId) {
-                this.authenticated = true;
-                console.log('Google Analytics credentials available for server-side authentication');
-            }
+            // The client-side just makes API calls to the secure endpoint
+            this.authenticated = true;
+            console.log('Client ready to make secure API calls to server-side authentication');
         } catch (error) {
             console.error('Authentication setup failed:', error);
             // Fall back to simulated data
@@ -108,6 +111,9 @@ class SecureGoogleAnalyticsService {
     // Fetch analytics data through secure API endpoint
     async fetchRealAnalyticsData(dateRange = 30) {
         try {
+            console.log(`Attempting to fetch analytics data for range: ${dateRange} days`);
+            console.log('Making request to API endpoint: /api/ga?range=' + dateRange);
+            
             // Call secure backend API instead of direct GA4 API
             const response = await fetch(`/api/ga?range=${dateRange}`, {
                 method: 'GET',
@@ -116,6 +122,8 @@ class SecureGoogleAnalyticsService {
                 }
             });
 
+            console.log('API Response status:', response.status);
+            
             if (response.ok) {
                 const data = await response.json();
                 console.log('Successfully fetched real analytics data:', data);
@@ -126,15 +134,17 @@ class SecureGoogleAnalyticsService {
                 
                 // Log the specific error to help with debugging
                 console.error(`API returned error: ${response.status} - ${JSON.stringify(errorData)}`);
+                
+                // Throw an error to be caught by the calling function
+                throw new Error(`API request failed: ${errorData.error || 'Unknown error'}`);
             }
         } catch (error) {
             console.error('Network error fetching real analytics:', error);
             console.error('This may indicate that the API endpoint is not accessible or environment variables are not set.');
+            
+            // Re-throw the error to be handled by the caller
+            throw error;
         }
-
-        // Fallback to realistic simulated data
-        console.log('Using simulated data as fallback');
-        return this.generateRealisticAnalyticsData(dateRange);
     }
 
     // Generate realistic analytics data (used when not authenticated)
@@ -264,6 +274,8 @@ class SecureGoogleAnalyticsService {
 
 // Initialize GA service - try multiple approaches to ensure it's available
 function initializeGaService() {
+    console.log('Attempting to initialize GA Service...');
+    
     try {
         window.gaService = new SecureGoogleAnalyticsService();
         
@@ -274,18 +286,22 @@ function initializeGaService() {
             }
         };
         
-        console.log('GA Service initialized successfully');
+        console.log('GA Service initialized successfully:', window.gaService);
+        console.log('fetchRealAnalyticsData method exists:', typeof window.gaService.fetchRealAnalyticsData === 'function');
     } catch (error) {
         console.error('Error initializing GA Service:', error);
     }
 }
 
 // Try to initialize immediately if DOM is already loaded
+console.log('Document ready state:', document.readyState);
 if (document.readyState === 'loading') {
     // DOM is still loading
+    console.log('Waiting for DOM to be loaded before initializing GA Service...');
     document.addEventListener('DOMContentLoaded', initializeGaService);
 } else {
     // DOM is already loaded
+    console.log('DOM already loaded, initializing GA Service immediately...');
     initializeGaService();
 }
 

@@ -147,13 +147,24 @@ document.addEventListener('DOMContentLoaded', function() {
         showNotification('Refreshing analytics data...', 'info');
         
         try {
+            console.log('Checking for gaService:', window.gaService);
+            console.log('gaService typeof:', typeof window.gaService);
+            
             // Check if gaService is available
             if (!window.gaService) {
-                throw new Error('Google Analytics service not loaded');
+                console.error('gaService is undefined or null');
+                throw new Error('Google Analytics service not loaded. Please check browser console for details.');
+            }
+            
+            // Check if the required method exists
+            if (typeof window.gaService.fetchRealAnalyticsData !== 'function') {
+                console.error('fetchRealAnalyticsData method does not exist on gaService');
+                throw new Error('Analytics service method not available');
             }
             
             // Get data from secure analytics service
             const analyticsData = await window.gaService.fetchRealAnalyticsData(30);
+            console.log('Received analytics data:', analyticsData);
             updateDashboardWithAnalytics(analyticsData);
             showNotification('Analytics data refreshed successfully!', 'success');
             
@@ -163,7 +174,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             console.error('Error refreshing analytics:', error);
-            showNotification('Failed to refresh analytics data: ' + error.message, 'error');
+            
+            // If API call fails, use simulated data as fallback
+            try {
+                console.log('Using simulated data as fallback...');
+                const simulatedData = window.gaService.generateRealisticAnalyticsData(30);
+                updateDashboardWithAnalytics(simulatedData);
+                showNotification('Using simulated data (API unavailable): ' + error.message, 'info');
+            } catch (fallbackError) {
+                console.error('Error with fallback:', fallbackError);
+                showNotification('Failed to refresh analytics data: ' + error.message, 'error');
+            }
         }
     }
     
