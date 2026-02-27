@@ -151,35 +151,50 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function updateDashboardWithAnalytics(data) {
+        // Validate data
+        if (!data) {
+            console.error('No data provided to updateDashboardWithAnalytics');
+            return;
+        }
+        
         // Update summary cards
         if (data.summary) {
-            document.getElementById('totalVisitors').textContent = window.gaService.formatNumber(data.summary.visitors);
-            document.getElementById('pageViews').textContent = window.gaService.formatNumber(data.summary.pageViews);
-            document.getElementById('musicPlays').textContent = window.gaService.formatNumber(data.summary.musicPlays);
-            document.getElementById('galleryViews').textContent = window.gaService.formatNumber(data.summary.galleryViews);
+            const totalVisitorsEl = document.getElementById('totalVisitors');
+            const pageViewsEl = document.getElementById('pageViews');
+            const musicPlaysEl = document.getElementById('musicPlays');
+            const galleryViewsEl = document.getElementById('galleryViews');
+            
+            if (totalVisitorsEl) totalVisitorsEl.textContent = window.gaService.formatNumber(data.summary.visitors || 0);
+            if (pageViewsEl) pageViewsEl.textContent = window.gaService.formatNumber(data.summary.pageViews || 0);
+            if (musicPlaysEl) musicPlaysEl.textContent = window.gaService.formatNumber(data.summary.musicPlays || 0);
+            if (galleryViewsEl) galleryViewsEl.textContent = window.gaService.formatNumber(data.summary.galleryViews || 0);
         }
         
         // Update recent activity
-        if (data.recentActivity) {
+        if (data.recentActivity && Array.isArray(data.recentActivity)) {
             updateRecentActivity(data.recentActivity);
         }
         
         // Update top referrers
-        if (data.topReferrers) {
+        if (data.topReferrers && Array.isArray(data.topReferrers)) {
             updateTopReferrers(data.topReferrers);
         }
         
         // Update charts if Chart.js is available
-        if (typeof Chart !== 'undefined' && data.trafficData) {
-            updateTrafficChart(data.trafficData);
-            updateEngagementChart(data);
-            updateDeviceChart(data);
-            updateGeoChart(data);
-        }
-        
-        // Update top pages chart if available
-        if (typeof Chart !== 'undefined' && data.topPages) {
-            updateTopPagesChart(data.topPages);
+        if (typeof Chart !== 'undefined') {
+            if (data.trafficData && Array.isArray(data.trafficData)) {
+                updateTrafficChart(data.trafficData);
+            }
+            if (data.trafficData || data.summary) {
+                updateEngagementChart(data);
+                updateDeviceChart(data);
+                updateGeoChart(data);
+            }
+            if (data.topPages && Array.isArray(data.topPages)) {
+                updateTopPagesChart(data.topPages);
+            }
+        } else {
+            console.warn('Chart.js not available, skipping chart updates');
         }
     }
     
@@ -302,8 +317,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Prepare engagement data
         const engagementData = data.trafficData || [];
+        if (engagementData.length === 0) {
+            console.warn('No engagement data available');
+            return;
+        }
+        
         const dates = engagementData.map(item => item.date);
-        const bounceRates = engagementData.map(item => parseFloat(item.bounceRate));
+        const bounceRates = engagementData.map(item => parseFloat(item.bounceRate) || 0);
         const engagementRates = engagementData.map(item => parseFloat(item.engagementRate) || 0);
         
         window.engagementChartInstance = new Chart(ctx, {
@@ -625,41 +645,64 @@ Yuhger6a6y Admin Dashboard Help:
         // Secure analytics service is already loaded via HTML script tag
         console.log('Checking for Secure Analytics service...');
         
-        // Wait a bit for the service to initialize
-        setTimeout(() => {
-            if (window.gaService) {
-                console.log('GA Service is ready');
-                // Load Chart.js for charts
-                loadChartJS();
-                
-                // Initial data load after everything is ready
-                setTimeout(() => {
-                    if (window.gaService) {
+        // Load Chart.js first, then initialize analytics
+        loadChartJS().then(() => {
+            console.log('Chart.js loaded successfully');
+            
+            // Wait for GA service to be ready
+            const checkGaService = setInterval(() => {
+                if (window.gaService) {
+                    clearInterval(checkGaService);
+                    console.log('GA Service is ready');
+                    
+                    // Initial data load after everything is ready
+                    setTimeout(() => {
                         refreshAnalytics();
+                    }, 500);
+                }
+            }, 100);
+            
+            // Timeout after 5 seconds
+            setTimeout(() => {
+                clearInterval(checkGaService);
+                if (!window.gaService) {
+                    console.error('GA Service failed to initialize');
+                    showNotification('Analytics service not available - using fallback data', 'info');
+                    // Use fallback data
+                    if (window.gaService && typeof window.gaService.generateRealisticAnalyticsData === 'function') {
+                        const fallbackData = window.gaService.generateRealisticAnalyticsData(30);
+                        updateDashboardWithAnalytics(fallbackData);
                     }
-                }, 1000);
-            } else {
-                console.error('GA Service is not available');
-                // Still load Chart.js for basic functionality
-                loadChartJS();
-                showNotification('Analytics service not available', 'error');
-            }
-        }, 500);
+                }
+            }, 5000);
+        }).catch(error => {
+            console.error('Failed to load Chart.js:', error);
+            showNotification('Failed to load chart functionality', 'error');
+        });
     }
     
-    // Load Chart.js
+    // Load Chart.js - returns a promise
     function loadChartJS() {
-        const chartScript = document.createElement('script');
-        chartScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-        chartScript.onload = function() {
-            console.log('Chart.js loaded');
-            // Chart.js is loaded but we'll load data after both scripts are ready
-        };
-        chartScript.onerror = function() {
-            console.error('Failed to load Chart.js');
-            showNotification('Failed to load chart functionality', 'error');
-        };
-        document.head.appendChild(chartScript);
+        return new Promise((resolve, reject) => {
+            // Check if Chart.js is already loaded
+            if (typeof Chart !== 'undefined') {
+                console.log('Chart.js already loaded');
+                resolve();
+                return;
+            }
+            
+            const chartScript = document.createElement('script');
+            chartScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+            chartScript.onload = function() {
+                console.log('Chart.js loaded');
+                resolve();
+            };
+            chartScript.onerror = function() {
+                console.error('Failed to load Chart.js');
+                reject(new Error('Failed to load Chart.js'));
+            };
+            document.head.appendChild(chartScript);
+        });
     }
     
     // Add subtle background animation

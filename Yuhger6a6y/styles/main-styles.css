@@ -178,8 +178,7 @@ body {
     letter-spacing: -0.5px;
 }
 
-/* Duplicate removed - merged with earlier definition */
-
+/* Desktop nav-link styles - mobile styles are defined in the media query above */
 .nav-link {
     color: var(--text-light);
     text-decoration: none;
@@ -354,10 +353,6 @@ footer {
     }
     
     .nav {
-        padding: 20px 25px;
-    }
-    
-    .nav-menu {
-        display: none;
+        padding: 0;
     }
 }

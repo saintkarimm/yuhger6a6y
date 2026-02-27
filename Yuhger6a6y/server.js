@@ -28,6 +28,7 @@ const MIME_TYPES = {
   '.json': 'application/json',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
   '.gif': 'image/gif',
   '.svg': 'image/svg+xml',
   '.ico': 'image/x-icon'
@@ -359,7 +360,11 @@ function handleStaticFileRequest(req, res) {
   
   // Resolve the file path
   filePath = path.resolve(filePath);
-  const extname = String(path.extname(filePath)).toLowerCase();
+  let extname = String(path.extname(filePath)).toLowerCase();
+  // Handle .JPG extension (case insensitive)
+  if (extname === '.jpg' || extname === '.jpeg') {
+    extname = '.jpg';
+  }
   const contentType = MIME_TYPES[extname] || 'application/octet-stream';
   
   fs.readFile(filePath, (error, content) => {
