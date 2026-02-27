@@ -257,8 +257,9 @@ function generateRecentActivity(trafficData) {
   return recentActivity.sort((a, b) => b.timestamp - a.timestamp);
 }
 
+// Vercel serverless function configuration
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 };
